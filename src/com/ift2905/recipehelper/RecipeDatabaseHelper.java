@@ -6,8 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 
-	static final String shopListTableName = "shop_list";
-	static final String[] tableNames = {"history","favorites"};
+	static final String[] tableNames = {"shop_list", "history","favorites"};
 	static final String[] shopListColumns = {"ingredient","from_recipe","checked"};
 	static final String[] histOrFavColumns = {"recipe_id", "recipe_name", "cooking_time", "servings", "rating"};
 	Context context;
@@ -17,17 +16,15 @@ public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 	}
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// TODO Auto-generated method stub
-		
-		String createShopListTable = "create table" + shopListTableName + " ("
+		String createShopListTable = "create table" + tableNames + " ("
 				+ shopListColumns[0] + " text primary_key, " 
 				+ shopListColumns[1] + " text, "
 				+ shopListColumns[2] + " text)";
 		
 		db.execSQL(createShopListTable);
 		
-		for (String name: tableNames){
-			String createTable = "create table" + name + " ("
+		for (int i = 1; i < tableNames.length; i++){
+			String createTable = "create table" + tableNames[i] + " ("
 					+ histOrFavColumns[0] + " text primary_key, "
 					+ histOrFavColumns[1] + " text, "
 					+ histOrFavColumns[2] + " text, "
@@ -36,13 +33,14 @@ public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 			
 			db.execSQL(createTable);
 		}
-
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
-
+		for (String name: tableNames){
+			db.execSQL("drop table if exists "+name);
+		}
+		onCreate(db);
 	}
 
 }

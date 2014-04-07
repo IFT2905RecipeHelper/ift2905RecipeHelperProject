@@ -1,4 +1,4 @@
-package com.example.recipehelper;
+package com.ift2905.recipehelper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,19 +31,25 @@ public class KraftAPI {
 		
 		erreur = null;
 		
-		String url = "       " ;
+		String url = "http://www.kraftfoods.com/ws/RecipeWS.asmx" ;
 		
+		/**
+		 *TODO: This thing. 
+		 *You'll have to split this in two: one part for a recipe search, one part to get recipe info. 
+		 *You'll probably need to add an argument to constructor.
+		 *Remove the comments before the "catch" portions once its done.
+		 */
 		try {
 
-		} catch (ClientProtocolException e) {
-			erreur = "Erreur HTTP (protocole) :"+e.getMessage();
-		} catch (IOException e) {
-			erreur = "Erreur HTTP (IO) :"+e.getMessage();
+		//} catch (ClientProtocolException e) {
+		//	erreur = "Erreur HTTP (protocole) :"+e.getMessage();
+		//} catch (IOException e) {
+		//	erreur = "Erreur HTTP (IO) :"+e.getMessage();
 		} catch (ParseException e) {
 			erreur = "Erreur JSON (parse) :"+e.getMessage();
-		} catch (JSONException e) {
-			erreur = "Erreur JSON :"+e.getMessage();
-		}
+		}// catch (JSONException e) {
+		//	erreur = "Erreur JSON :"+e.getMessage();
+		//}
 	}
 	
 	
