@@ -2,9 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:clickable="true" >
-         
+    
+    
+    
+    <ImageView
+        android:id="@+id/RecipeIcon"
+        android:contentDescription="Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:maxHeight="75dp"
+        android:maxWidth="75dp"
+        android:scaleType="fitCenter"  />
+    
+    <LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center_vertical">
+    
     <TextView 
 		android:id="@+id/RecipeName"
 		android:layout_width="match_parent"
@@ -13,7 +31,7 @@
         android:layout_marginRight="10dp"
 		android:text="Omelet"
 		android:textSize="30sp"
-		android:textStyle="bold"/>"
+		android:textStyle="bold"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
+            android:layout_marginRight="10dp"
             android:text="10mins"
             android:textSize="18sp" />
 
@@ -34,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
+            android:layout_marginRight="10dp"
             android:text="1 serv."
             android:textSize="18sp" />
 
@@ -41,8 +61,12 @@
             android:id="@+id/ratingBar1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="18sp" />
+            android:isIndicator="true"
+            android:style="@+style/ratingBar"
+             />
 
+    </LinearLayout>
+    
     </LinearLayout>
 
 </LinearLayout>
