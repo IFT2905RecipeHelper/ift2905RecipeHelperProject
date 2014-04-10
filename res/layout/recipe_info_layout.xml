@@ -38,6 +38,23 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp" >
+        
+        <!-- The clock, the fork&knife and the star come from the kraft sprite sheet.
+       	 http://www.kraftcanada.com/static/CRM/images/cms-media/sprite.png
+        -->
+        <ImageView
+       		android:id="@+id/TimerIcon"
+ 	        android:contentDescription="@string/clock_icon_desc"
+ 	        android:src="@drawable/clock"
+ 	        android:layout_width="wrap_content"
+ 	        android:layout_height="wrap_content"
+  	        android:layout_gravity="left"
+   	        android:layout_marginLeft="5dp"
+   	        android:minHeight="18dp"
+	        android:maxHeight="18dp"
+	        android:minWidth="18dp"
+    	    android:maxWidth="18dp"
+    	    android:scaleType="fitCenter"  />
 
         <TextView
             android:id="@+id/RecipeTime"
@@ -47,6 +64,20 @@
             android:layout_marginRight="10dp"
             android:text="10mins"
             android:textSize="18sp" />
+        
+        <ImageView
+       		android:id="@+id/ServIcon"
+ 	        android:contentDescription="@string/serv_icon_desc"
+ 	        android:src="@drawable/fork"
+ 	        android:layout_width="wrap_content"
+ 	        android:layout_height="wrap_content"
+  	        android:layout_gravity="left"
+   	        android:layout_marginLeft="5dp"
+   	        android:minHeight="18dp"
+	        android:maxHeight="18dp"
+	        android:minWidth="18dp"
+    	    android:maxWidth="18dp"
+    	    android:scaleType="fitCenter"  />
 
         <TextView
             android:id="@+id/RecipeServings"
@@ -56,14 +87,29 @@
             android:layout_marginRight="10dp"
             android:text="1 serv."
             android:textSize="18sp" />
+        
+        <ImageView
+       		android:id="@+id/StarIcon"
+ 	        android:contentDescription="@string/star_icon_desc"
+ 	        android:src="@drawable/star"
+ 	        android:layout_width="wrap_content"
+ 	        android:layout_height="wrap_content"
+  	        android:layout_gravity="left"
+   	        android:layout_marginLeft="5dp"
+   	        android:minHeight="18dp"
+	        android:maxHeight="18dp"
+	        android:minWidth="18dp"
+    	    android:maxWidth="18dp"
+    	    android:scaleType="fitCenter"  />
 
-        <RatingBar
-            android:id="@+id/ratingBar1"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/RecipeRating"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:isIndicator="true"
-            android:style="@+style/ratingBar"
-             />
+            android:layout_gravity="left"
+            android:layout_marginRight="10dp"
+            android:text="5/5"
+            android:textSize="18sp" />
 
     </LinearLayout>
     
