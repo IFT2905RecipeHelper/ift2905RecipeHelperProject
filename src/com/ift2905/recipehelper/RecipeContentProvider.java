@@ -151,4 +151,20 @@ public class RecipeContentProvider extends ContentProvider {
 		getContext().getContentResolver().notifyChange(uri, null);
 		return rowsUpdated;
 	}
+	
+	public static Uri getPageUri(int page){
+		Uri pageUri = null;
+		switch (page){
+		case SHOPPINGLIST:
+		case HISTORY:
+		case FAVORITES:
+			pageUri = Uri.parse("content://" + AUTHORITY + "/" + ALLCODES[page - 1] );
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown page code: " + page);
+		
+		}
+		return pageUri;
+		
+	}
 }
