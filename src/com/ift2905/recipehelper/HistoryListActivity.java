@@ -21,8 +21,9 @@ LoaderManager.LoaderCallbacks<Cursor>  {
 	Cursor queryResult;
 	SimpleCursorAdapter adapter;
 	
-	static final String[] FROM = Arrays.copyOfRange(RecipeDatabaseHelper.histOrFavColumns, 1, RecipeDatabaseHelper.histOrFavColumns.length);
+	static final String[] FROM = RecipeDatabaseHelper.histOrFavColumns;
 	static final int[] TO = {
+		R.id.RecipeID,
 		R.id.RecipeName,
 		R.id.RecipeTime,
 		R.id.RecipeServings,
@@ -34,6 +35,7 @@ LoaderManager.LoaderCallbacks<Cursor>  {
 		@Override
 		public boolean setViewValue(View v, Cursor c, int index) {
 			switch( v.getId() ) {
+			case R.id.RecipeID:
 			case R.id.RecipeName:
 			case R.id.RecipeTime:
 			case R.id.RecipeServings:
