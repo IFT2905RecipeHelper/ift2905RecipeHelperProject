@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity 
-            android:name="com.ift2905.recipeHelper.HistoryListActivity"
+            android:name="HistoryListActivity"
             android:parentActivityName="com.ift2905.recipehelper.MainActivity">
             <meta-data
             android:name="android.support.PARENT_ACTIVITY"

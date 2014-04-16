@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.SimpleCursorAdapter.ViewBinder;
+import android.util.Log;
 
 public class HistoryListActivity extends ListActivity implements
 LoaderManager.LoaderCallbacks<Cursor>  {
@@ -52,6 +53,7 @@ LoaderManager.LoaderCallbacks<Cursor>  {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.d("RecipeHelper", "Called on create");
 		super.onCreate(savedInstanceState);
 		
 		pageType = getIntent().getStringExtra("pageType");
@@ -60,17 +62,21 @@ LoaderManager.LoaderCallbacks<Cursor>  {
 	protected void onResume(){
 		super.onResume();
 		getLoaderManager().initLoader(LOADER_ID, null, this);
+		Log.d("RecipeHelper", "Called on resume");
 
 		adapter = new SimpleCursorAdapter(this, R.layout.recipe_info_layout, queryResult, FROM, TO, 0);
 		adapter.setViewBinder(VIEW_BINDER);
+		Log.d("RecipeHelper", "adapter created, view set");
 
 		setListAdapter(adapter);
+		Log.d("RecipeHelper", "adapter set");
 		
 	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		CursorLoader cursorLoader = null;
+		Log.d("RecipeHelper", "onCreateLoader called");
 		if (pageType == null || pageType == "History"){
 			cursorLoader = new CursorLoader(this, RecipeContentProvider.getPageUri(RecipeContentProvider.HISTORY),
 					RecipeDatabaseHelper.histOrFavColumns, null, null, null);
@@ -78,6 +84,7 @@ LoaderManager.LoaderCallbacks<Cursor>  {
 			cursorLoader = new CursorLoader(this, RecipeContentProvider.getPageUri(RecipeContentProvider.FAVORITES),
 					RecipeDatabaseHelper.histOrFavColumns, null, null, null);
 		}
+		Log.d("RecipeHelper", "onCreateLoader success");
 		return cursorLoader;
 	}
 
