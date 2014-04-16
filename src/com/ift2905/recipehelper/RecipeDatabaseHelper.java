@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 
 	static final String[] tableNames = {"shop_list", "history","favorites"};
-	static final String[] shopListColumns = {"ingredient","from_recipe","checked"};
+	static final String[] shopListColumns = {"recipe_ingredient_id", "ingredient","from_recipe"};
 	static final String[] histOrFavColumns = {"recipe_id", "recipe_name", "cooking_time", "servings", "rating"};
 	Context context;
 	public RecipeDatabaseHelper(Context context) {
@@ -29,7 +29,7 @@ public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 					+ histOrFavColumns[1] + " text, "
 					+ histOrFavColumns[2] + " text, "
 					+ histOrFavColumns[3] + " text, "
-					+ histOrFavColumns[4] + " integer)";
+					+ histOrFavColumns[4] + " text)";
 			
 			db.execSQL(createTable);
 		}

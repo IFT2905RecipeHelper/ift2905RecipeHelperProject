@@ -77,10 +77,10 @@ LoaderManager.LoaderCallbacks<Cursor>  {
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		CursorLoader cursorLoader = null;
 		Log.d("RecipeHelper", "onCreateLoader called");
-		if (pageType == null || pageType == "History"){
+		if (pageType == null || pageType.equals("History")){
 			cursorLoader = new CursorLoader(this, RecipeContentProvider.getPageUri(RecipeContentProvider.HISTORY),
 					RecipeDatabaseHelper.histOrFavColumns, null, null, null);
-		} else if (pageType == "Favorites"){
+		} else if (pageType.equals("Favorites")){
 			cursorLoader = new CursorLoader(this, RecipeContentProvider.getPageUri(RecipeContentProvider.FAVORITES),
 					RecipeDatabaseHelper.histOrFavColumns, null, null, null);
 		}
