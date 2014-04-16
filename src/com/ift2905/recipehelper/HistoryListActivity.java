@@ -1,6 +1,5 @@
 package com.ift2905.recipehelper;
 
-import java.util.Arrays;
 import android.app.ListActivity;
 import android.app.LoaderManager;
 import android.content.CursorLoader;

@@ -1,125 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clickable="true"
+    android:onClick=""
     android:orientation="horizontal"
-    android:clickable="true" >
-    
-    
-    
+    tools:context=".HistoryListActivity" >
+
     <ImageView
         android:id="@+id/RecipeIcon"
-        android:contentDescription="Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="5dp"
+        android:contentDescription="Icon"
         android:maxHeight="75dp"
         android:maxWidth="75dp"
-        android:scaleType="fitCenter"  />
-    
-    <LinearLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_gravity="center_vertical">
-    
-    <TextView 
-		android:id="@+id/RecipeName"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginLeft="5dp"
-        android:layout_marginRight="10dp"
-		android:text="Omelet"
-		android:textSize="30sp"
-		android:textStyle="bold"/>
+        android:scaleType="fitCenter" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" >
-        
-        <!-- The clock, the fork&knife and the star come from the kraft sprite sheet.
-       	 http://www.kraftcanada.com/static/CRM/images/cms-media/sprite.png
-        -->
-        <ImageView
-       		android:id="@+id/TimerIcon"
- 	        android:contentDescription="@string/clock_icon_desc"
- 	        android:src="@drawable/clock"
- 	        android:layout_width="wrap_content"
- 	        android:layout_height="wrap_content"
-  	        android:layout_gravity="left"
-   	        android:layout_marginLeft="5dp"
-   	        android:minHeight="18dp"
-	        android:maxHeight="18dp"
-	        android:minWidth="18dp"
-    	    android:maxWidth="18dp"
-    	    android:scaleType="fitCenter"  />
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/RecipeTime"
-            android:layout_width="wrap_content"
+            android:id="@+id/RecipeName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
-            android:text="10mins"
-            android:textSize="18sp" />
-        
-        <ImageView
-       		android:id="@+id/ServIcon"
- 	        android:contentDescription="@string/serv_icon_desc"
- 	        android:src="@drawable/fork"
- 	        android:layout_width="wrap_content"
- 	        android:layout_height="wrap_content"
-  	        android:layout_gravity="left"
-   	        android:layout_marginLeft="5dp"
-   	        android:minHeight="18dp"
-	        android:maxHeight="18dp"
-	        android:minWidth="18dp"
-    	    android:maxWidth="18dp"
-    	    android:scaleType="fitCenter"  />
+            android:text="Omelet"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/RecipeServings"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginRight="10dp"
-            android:text="1 serv."
-            android:textSize="18sp" />
-        
-        <ImageView
-       		android:id="@+id/StarIcon"
- 	        android:contentDescription="@string/star_icon_desc"
- 	        android:src="@drawable/star"
- 	        android:layout_width="wrap_content"
- 	        android:layout_height="wrap_content"
-  	        android:layout_gravity="left"
-   	        android:layout_marginLeft="5dp"
-   	        android:minHeight="18dp"
-	        android:maxHeight="18dp"
-	        android:minWidth="18dp"
-    	    android:maxWidth="18dp"
-    	    android:scaleType="fitCenter"  />
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" >
 
-        <TextView
-            android:id="@+id/RecipeRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginRight="10dp"
-            android:text="5/5"
-            android:textSize="18sp" />
+            <!--
+             The clock, the fork&knife and the star come from the kraft sprite sheet.
+             www.kraftcanada.com/static/CRM/images/cms-media/sprite.png
+            -->
 
+            <ImageView
+                android:id="@+id/TimerIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="5dp"
+                android:contentDescription="@string/clock_icon_desc"
+                android:maxHeight="18dp"
+                android:maxWidth="18dp"
+                android:minHeight="18dp"
+                android:minWidth="18dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/clock" />
+
+            <TextView
+                android:id="@+id/RecipeTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginRight="10dp"
+                android:text="10mins"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/ServIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="5dp"
+                android:contentDescription="@string/serv_icon_desc"
+                android:maxHeight="18dp"
+                android:maxWidth="18dp"
+                android:minHeight="18dp"
+                android:minWidth="18dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/fork" />
+
+            <TextView
+                android:id="@+id/RecipeServings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginRight="10dp"
+                android:text="1 serv."
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/StarIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="5dp"
+                android:contentDescription="@string/star_icon_desc"
+                android:maxHeight="18dp"
+                android:maxWidth="18dp"
+                android:minHeight="18dp"
+                android:minWidth="18dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/star" />
+
+            <TextView
+                android:id="@+id/RecipeRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginRight="10dp"
+                android:text="5/5"
+                android:textSize="18sp" />
+        </LinearLayout>
     </LinearLayout>
-    
-    </LinearLayout>
-    
-    <TextView 
+
+    <TextView
         android:id="@+id/RecipeID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
 </LinearLayout>

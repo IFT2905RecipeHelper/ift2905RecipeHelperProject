@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/shoplistmenuopt"
+        android:title="@string/shoplistmenuopt_title"
+        />
+    <item
+        android:id="@+id/historymenuopt"
+        android:title="@string/historymenuopt_title"
+        />
+    <item
+        android:id="@+id/favoritesmenuopt"
+        android:title="@string/favoritesmenuopt_title"
+        />
+</menu>

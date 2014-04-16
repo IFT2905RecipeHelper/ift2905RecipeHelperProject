@@ -7,5 +7,12 @@
     <string name="clock_icon_desc">Clock icon</string>
     <string name="serv_icon_desc">Servings icon</string>
     <string name="star_icon_desc">Rating icon</string>
-
+	<string name="initsearchicon_title">Search</string>
+	<string name="menupopup_title">Menu</string>
+	<string name="shoplistmenuopt_title">Shopping List</string>
+	<string name="historymenuopt_title">History</string>
+	<string name="favoritesmenuopt_title">Favorites</string>
+	<string name="callhist_pageType">History</string>
+	<string name="callfavs_pageType">Favorites</string>
+	
 </resources>

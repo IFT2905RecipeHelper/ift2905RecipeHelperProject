@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity 
+            android:name="com.ift2905.recipeHelper.HistoryListActivity"
+            android:parentActivityName="com.ift2905.recipehelper.MainActivity">
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.ift2905.recipehelper.MainActivity" />
+            
+        </activity>
     </application>
 
 </manifest>
