@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     tools:context="com.ift2905.recipehelper.MainActivity"
     tools:ignore="MergeRootFrame" >
+    
+    <ListView
+        android:id="@+id/RecipesOfTheWeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
 
 </FrameLayout>
 

@@ -1,35 +1,111 @@
 package com.ift2905.recipehelper;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.support.v4.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.SimpleAdapter.ViewBinder;
+import android.widget.TextView;
 import android.os.Build;
 
 public class MainActivity extends ActionBarActivity implements OnMenuItemClickListener {
 
 	PopupMenu optionMenu;
+	SimpleAdapter adapter;
+	ListView recipeOfTheWeekList;
+	ArrayList<HashMap<String,String>> recipesOfTheWeek = new ArrayList<HashMap<String,String>>();
+	Context context = this;
+	static final ViewBinder VIEWBINDER = new ViewBinder() {
+
+		@Override
+		public boolean setViewValue(View view, Object data,
+				String textRepresentation) {
+			switch (view.getId()){
+			case R.id.RecipeID:
+			case R.id.RecipeName:
+			case R.id.RecipeServings:
+			case R.id.RecipeTime:
+				return false;
+			case R.id.RecipeRating:
+				Log.d("RecipeHelper",(String) data);
+				String valueOn5 = (String) data + "/5";
+				((TextView) view).setText(valueOn5);
+				return true;
+			case R.id.RecipeIcon:
+				Log.d("RecipeHelper",(String) data);
+				new DownloadImageTask((ImageView) view).execute((String) data);
+				return true;
+			default:
+				return false;
+			}
+		}
+		
+	};
+	
+	final Thread API_THREAD = new Thread(new Runnable(){
+
+		@Override
+		public void run() {
+			KraftAPI api = new KraftAPI(KraftAPI.RECIPESOFTHEWEEK);
+			Log.d("RecipeHelper", "created the API");
+			recipesOfTheWeek = api.getSearchResults();
+			for (HashMap<String,String> h: recipesOfTheWeek){
+				Log.d("RecipeHelper", h.toString());
+			}
+			runOnUiThread(NOTIFY_THREAD);
+		}		
+	});
+	
+	final Thread NOTIFY_THREAD = new Thread(new Runnable(){
+
+		@Override
+		public void run() {
+			Log.d("RecipeHelper", "notifying");
+	        adapter = new SimpleAdapter(context, recipesOfTheWeek, R.layout.recipe_info_layout, from, to);
+	        adapter.setViewBinder(VIEWBINDER);
+	        recipeOfTheWeekList.setAdapter(adapter);
+			((BaseAdapter) recipeOfTheWeekList.getAdapter()).notifyDataSetChanged();
+			Log.d("RecipeHelper", "notified");
+		}
+		
+	});
+	
+	String[] from =  {"RecipeID", "RecipeName", "TotalTime", "NumberOfServings", "AvgRating", "PhotoURL"};
+	int[] to = {R.id.RecipeID, R.id.RecipeName, R.id.RecipeTime, R.id.RecipeServings, R.id.RecipeRating, R.id.RecipeIcon};
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        recipeOfTheWeekList = (ListView)findViewById(R.id.RecipesOfTheWeek);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
+        Log.d("RecipeHelper", "started API task");
+        API_THREAD.start();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -97,11 +173,40 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 	}
 
 	private void launchActivity(String pageLaunched) {
-		if (pageLaunched == "History" || pageLaunched == "Favorites"){
+		if (pageLaunched.equals("History") || pageLaunched.equals("Favorites")){
 			Intent dtbAccessActivity = new Intent(this, HistoryListActivity.class);
 			dtbAccessActivity.putExtra("pageType", pageLaunched);
 			startActivity(dtbAccessActivity);
 		}
 	}
+	
+	/*
+	 * This is code from stackoverflow
+	 * http://stackoverflow.com/questions/5776851/load-image-from-url
+	 * We need this in order to use the images provided to use by the kraft API
+	 * The code lets us load the picture on a seperate thread so as to not slow down the activity.
+	 */
+	private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+		  ImageView bmImage;
 
+		  public DownloadImageTask(ImageView bmImage) {
+		      this.bmImage = bmImage;
+		  }
+
+		  protected Bitmap doInBackground(String... urls) {
+		      String urldisplay = urls[0];
+		      Bitmap mIcon11 = null;
+		      try {
+		        InputStream in = new java.net.URL(urldisplay).openStream();
+		        mIcon11 = BitmapFactory.decodeStream(in);
+		      } catch (Exception e) {
+		          e.printStackTrace();
+		      }
+		      return mIcon11;
+		  }
+
+		  protected void onPostExecute(Bitmap result) {
+		      bmImage.setImageBitmap(result);
+		  }
+		}
 }

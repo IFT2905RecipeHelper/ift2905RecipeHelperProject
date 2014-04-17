@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
-    android:onClick=""
     android:orientation="horizontal"
-    tools:context=".HistoryListActivity" >
+    tools:context=".MainActivity" >
 
     <ImageView
         android:id="@+id/RecipeIcon"

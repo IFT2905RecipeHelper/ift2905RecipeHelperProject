@@ -1085,15 +1085,16 @@ containing a value of this type.
         public static final int star=0x7f02005c;
     }
     public static final class id {
-        public static final int RecipeID=0x7f050045;
-        public static final int RecipeIcon=0x7f05003d;
-        public static final int RecipeName=0x7f05003e;
-        public static final int RecipeRating=0x7f050044;
-        public static final int RecipeServings=0x7f050042;
-        public static final int RecipeTime=0x7f050040;
-        public static final int ServIcon=0x7f050041;
-        public static final int StarIcon=0x7f050043;
-        public static final int TimerIcon=0x7f05003f;
+        public static final int RecipeID=0x7f050046;
+        public static final int RecipeIcon=0x7f05003e;
+        public static final int RecipeName=0x7f05003f;
+        public static final int RecipeRating=0x7f050045;
+        public static final int RecipeServings=0x7f050043;
+        public static final int RecipeTime=0x7f050041;
+        public static final int RecipesOfTheWeek=0x7f05003d;
+        public static final int ServIcon=0x7f050042;
+        public static final int StarIcon=0x7f050044;
+        public static final int TimerIcon=0x7f050040;
         public static final int action_bar=0x7f05001c;
         public static final int action_bar_activity_content=0x7f050015;
         public static final int action_bar_container=0x7f05001b;
@@ -1105,7 +1106,7 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f05004b;
+        public static final int action_settings=0x7f05004c;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
@@ -1120,17 +1121,17 @@ containing a value of this type.
         public static final int end=0x7f050013;
         public static final int expand_activities_button=0x7f050026;
         public static final int expanded_menu=0x7f05002c;
-        public static final int favoritesmenuopt=0x7f05004a;
-        public static final int historymenuopt=0x7f050049;
+        public static final int favoritesmenuopt=0x7f05004b;
+        public static final int historymenuopt=0x7f05004a;
         public static final int home=0x7f050014;
         public static final int homeAsUp=0x7f050005;
         public static final int icon=0x7f05002a;
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f050027;
-        public static final int initsearch=0x7f050046;
+        public static final int initsearch=0x7f050047;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
-        public static final int menupopup=0x7f050047;
+        public static final int menupopup=0x7f050048;
         public static final int middle=0x7f050012;
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
@@ -1148,7 +1149,7 @@ containing a value of this type.
         public static final int search_plate=0x7f050036;
         public static final int search_src_text=0x7f050037;
         public static final int search_voice_btn=0x7f05003b;
-        public static final int shoplistmenuopt=0x7f050048;
+        public static final int shoplistmenuopt=0x7f050049;
         public static final int shortcut=0x7f05002e;
         public static final int showCustom=0x7f050007;
         public static final int showHome=0x7f050004;
