@@ -66,19 +66,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 		
 	};
 	
-	final Thread API_THREAD = new Thread(new Runnable(){
-
-		@Override
-		public void run() {
-			KraftAPI api = new KraftAPI(KraftAPI.RECIPESOFTHEWEEK);
-			Log.d("RecipeHelper", "created the API");
-			recipesOfTheWeek = api.getSearchResults();
-			for (HashMap<String,String> h: recipesOfTheWeek){
-				Log.d("RecipeHelper", h.toString());
-			}
-			runOnUiThread(NOTIFY_THREAD);
-		}		
-	});
+	Thread API_THREAD;
 	
 	final Thread NOTIFY_THREAD = new Thread(new Runnable(){
 
@@ -102,9 +90,28 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recipeOfTheWeekList = (ListView)findViewById(R.id.RecipesOfTheWeek);
-
         Log.d("RecipeHelper", "started API task");
-        API_THREAD.start();
+    }
+    
+    @Override
+    protected void onResume(){
+    	super.onResume();
+    	
+    	//Need to reistantiate thread to reset hasBeenStarted
+    	API_THREAD = new Thread(new Runnable(){
+
+    		@Override
+    		public void run() {
+    			KraftAPI api = new KraftAPI(KraftAPI.RECIPESOFTHEWEEK);
+    			Log.d("RecipeHelper", "created the API");
+    			recipesOfTheWeek = api.getSearchResults();
+    			for (HashMap<String,String> h: recipesOfTheWeek){
+    				Log.d("RecipeHelper", h.toString());
+    			}
+    			if(!NOTIFY_THREAD.isAlive()) runOnUiThread(NOTIFY_THREAD);
+    		}		
+    	});
+    	API_THREAD.start();
     }
 
     @Override

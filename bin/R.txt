@@ -241,8 +241,8 @@ int drawable ic_action_search 0x7f02005a
 int drawable ic_launcher 0x7f02005b
 int drawable star 0x7f02005c
 int id RecipeID 0x7f050046
-int id RecipeIcon 0x7f05003e
-int id RecipeName 0x7f05003f
+int id RecipeIcon 0x7f05003f
+int id RecipeName 0x7f05003e
 int id RecipeRating 0x7f050045
 int id RecipeServings 0x7f050043
 int id RecipeTime 0x7f050041

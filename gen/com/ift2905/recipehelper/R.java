@@ -1086,8 +1086,8 @@ containing a value of this type.
     }
     public static final class id {
         public static final int RecipeID=0x7f050046;
-        public static final int RecipeIcon=0x7f05003e;
-        public static final int RecipeName=0x7f05003f;
+        public static final int RecipeIcon=0x7f05003f;
+        public static final int RecipeName=0x7f05003e;
         public static final int RecipeRating=0x7f050045;
         public static final int RecipeServings=0x7f050043;
         public static final int RecipeTime=0x7f050041;
