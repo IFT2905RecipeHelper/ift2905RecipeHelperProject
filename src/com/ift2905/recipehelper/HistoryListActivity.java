@@ -54,37 +54,30 @@ LoaderManager.LoaderCallbacks<Cursor>  {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.d("RecipeHelper", "Called on create");
-		super.onCreate(savedInstanceState);
-		
 		pageType = getIntent().getStringExtra("pageType");
+		super.onCreate(savedInstanceState);	
+		Log.d("RecipeHelper", "Intent message is " + pageType);
 	}
 	
 	protected void onResume(){
 		super.onResume();
 		getLoaderManager().initLoader(LOADER_ID, null, this);
-		Log.d("RecipeHelper", "Called on resume");
 
-		adapter = new SimpleCursorAdapter(this, R.layout.recipe_info_layout, queryResult, FROM, TO, 0);
+		adapter = new SimpleCursorAdapter(this, R.layout.recipe_info_layout, null, FROM, TO, 0);
 		adapter.setViewBinder(VIEW_BINDER);
-		Log.d("RecipeHelper", "adapter created, view set");
-
-		setListAdapter(adapter);
-		Log.d("RecipeHelper", "adapter set");
-		
+		setListAdapter(adapter);		
 	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		CursorLoader cursorLoader = null;
-		Log.d("RecipeHelper", "onCreateLoader called");
-		if (pageType == null || pageType.equals("History")){
+		if (pageType.equals("History")){
 			cursorLoader = new CursorLoader(this, RecipeContentProvider.getPageUri(RecipeContentProvider.HISTORY),
 					RecipeDatabaseHelper.histOrFavColumns, null, null, null);
 		} else if (pageType.equals("Favorites")){
 			cursorLoader = new CursorLoader(this, RecipeContentProvider.getPageUri(RecipeContentProvider.FAVORITES),
 					RecipeDatabaseHelper.histOrFavColumns, null, null, null);
 		}
-		Log.d("RecipeHelper", "onCreateLoader success");
 		return cursorLoader;
 	}
 

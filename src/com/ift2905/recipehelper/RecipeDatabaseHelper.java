@@ -3,6 +3,7 @@ package com.ift2905.recipehelper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 
@@ -17,7 +18,7 @@ public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		String createShopListTable = "create table " + tableNames[0] + " ("
-				+ shopListColumns[0] + " text primary_key, " 
+				+ shopListColumns[0] + " integer primary key, " 
 				+ shopListColumns[1] + " text, "
 				+ shopListColumns[2] + " text)";
 		
@@ -25,7 +26,7 @@ public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 		
 		for (int i = 1; i < tableNames.length; i++){
 			String createTable = "create table " + tableNames[i] + " ("
-					+ histOrFavColumns[0] + " text primary_key, "
+					+ histOrFavColumns[0] + " integer primary key, "
 					+ histOrFavColumns[1] + " text, "
 					+ histOrFavColumns[2] + " text, "
 					+ histOrFavColumns[3] + " text, "
