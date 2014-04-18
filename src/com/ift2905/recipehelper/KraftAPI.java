@@ -46,7 +46,7 @@ public class KraftAPI {
 	ArrayList<HashMap<String,String>> searchResults;
 	
 	InputStream recipeStream;
-	KraftAPI(String functionInvoked){
+	KraftAPI(String functionInvoked) throws IOException{
 		
 		Log.d("RecipeHelper", "Creating API");
 		if (!(functionInvoked.equals(RECIPESOFTHEWEEK))){ 
@@ -91,8 +91,10 @@ public class KraftAPI {
 			recipeStream.close();
 		} catch (ClientProtocolException e) {
 			Log.d("RecipeHelper", "Erreur HTTP (protocole) :"+e.getMessage());
+			throw e;
 		} catch (IOException e) {
 			Log.d("RecipeHelper", "Erreur HTTP (IO) :"+e.getMessage());
+			throw e;
 		} catch (XmlPullParserException e) {
 			Log.d("RecipeHelper", e.getMessage());
 		} 

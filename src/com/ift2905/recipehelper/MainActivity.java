@@ -15,8 +15,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,8 +22,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleAdapter.ViewBinder;
@@ -39,6 +39,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 	ListView recipeOfTheWeekList;
 	ArrayList<HashMap<String,String>> recipesOfTheWeek = new ArrayList<HashMap<String,String>>();
 	Context context = this;
+	LinearLayout mainLayout;
 	static final ViewBinder VIEWBINDER = new ViewBinder() {
 
 		@Override
@@ -82,15 +83,28 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 		
 	});
 	
+	final Thread API_FAILED_THREAD = new Thread(new Runnable(){
+
+		@Override
+		public void run() {
+			TextView didNotConnect = new TextView(context);
+			didNotConnect.setText("Thank you for using Recipe Helper. Please connect to the internet do that you may search and view recipes.");
+			didNotConnect.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			didNotConnect.setTextSize(16);
+			//mainLayout.addView(didNotConnect);
+		}
+		
+	});
+	
 	String[] from =  {"RecipeID", "RecipeName", "TotalTime", "NumberOfServings", "AvgRating", "PhotoURL"};
 	int[] to = {R.id.RecipeID, R.id.RecipeName, R.id.RecipeTime, R.id.RecipeServings, R.id.RecipeRating, R.id.RecipeIcon};
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainLayout = (LinearLayout)findViewById(R.id.container);
         setContentView(R.layout.activity_main);
         recipeOfTheWeekList = (ListView)findViewById(R.id.RecipesOfTheWeek);
-        Log.d("RecipeHelper", "started API task");
     }
     
     @Override
@@ -102,13 +116,13 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
     		@Override
     		public void run() {
+    			try { 
     			KraftAPI api = new KraftAPI(KraftAPI.RECIPESOFTHEWEEK);
-    			Log.d("RecipeHelper", "created the API");
     			recipesOfTheWeek = api.getSearchResults();
-    			for (HashMap<String,String> h: recipesOfTheWeek){
-    				Log.d("RecipeHelper", h.toString());
+    			runOnUiThread(NOTIFY_THREAD);
+    			} catch (Exception e){
+    				runOnUiThread(API_FAILED_THREAD);
     			}
-    			if(!NOTIFY_THREAD.isAlive()) runOnUiThread(NOTIFY_THREAD);
     		}		
     	});
     	API_THREAD.start();
