@@ -8,6 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
 
 public class RecipeContentProvider extends ContentProvider {
 	
@@ -158,7 +159,7 @@ public class RecipeContentProvider extends ContentProvider {
 		case SHOPPINGLIST:
 		case HISTORY:
 		case FAVORITES:
-			pageUri = Uri.parse("content://" + AUTHORITY + "/" + ALLCODES[page - 1] );
+			pageUri = Uri.parse("content://" + AUTHORITY + "/" + ALLPATHS[page - 1] );
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown page code: " + page);

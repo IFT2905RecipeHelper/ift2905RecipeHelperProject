@@ -32,6 +32,9 @@
             android:value="com.ift2905.recipehelper.MainActivity" />
             
         </activity>
+        <provider
+            android:name="com.ift2905.recipehelper.RecipeContentProvider"
+            android:authorities="com.ift2905.recipehelper" />
     </application>
 
 </manifest>

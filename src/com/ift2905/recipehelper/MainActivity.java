@@ -52,12 +52,10 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 			case R.id.RecipeTime:
 				return false;
 			case R.id.RecipeRating:
-				Log.d("RecipeHelper",(String) data);
 				String valueOn5 = (String) data + "/5";
 				((TextView) view).setText(valueOn5);
 				return true;
 			case R.id.RecipeIcon:
-				Log.d("RecipeHelper",(String) data);
 				new DownloadImageTask((ImageView) view).execute((String) data);
 				return true;
 			default:

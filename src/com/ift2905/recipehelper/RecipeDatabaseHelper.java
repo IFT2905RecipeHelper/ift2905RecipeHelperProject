@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 
 	static final String[] tableNames = {"shop_list", "history","favorites"};
-	static final String[] shopListColumns = {"recipe_ingredient_id", "ingredient","from_recipe"};
-	static final String[] histOrFavColumns = {"recipe_id", "recipe_name", "cooking_time", "servings", "rating"};
+	static final String[] shopListColumns = {"_id", "ingredient","from_recipe"};
+	static final String[] histOrFavColumns = {"_id", "recipe_name", "cooking_time", "servings", "rating"};
 	Context context;
 	public RecipeDatabaseHelper(Context context) {
 		super(context, "recipe.db", null, 1);
@@ -16,7 +16,7 @@ public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 	}
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String createShopListTable = "create table" + tableNames + " ("
+		String createShopListTable = "create table " + tableNames[0] + " ("
 				+ shopListColumns[0] + " text primary_key, " 
 				+ shopListColumns[1] + " text, "
 				+ shopListColumns[2] + " text)";
@@ -24,7 +24,7 @@ public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(createShopListTable);
 		
 		for (int i = 1; i < tableNames.length; i++){
-			String createTable = "create table" + tableNames[i] + " ("
+			String createTable = "create table " + tableNames[i] + " ("
 					+ histOrFavColumns[0] + " text primary_key, "
 					+ histOrFavColumns[1] + " text, "
 					+ histOrFavColumns[2] + " text, "
