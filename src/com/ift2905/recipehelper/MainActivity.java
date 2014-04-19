@@ -8,7 +8,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
+import android.support.v7.widget.SearchView;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.app.SearchManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -133,6 +136,10 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         
     	MenuInflater menuInf = getMenuInflater();
 		menuInf.inflate(R.menu.action_bar_menu, menu);
+		MenuItem searchItem = menu.findItem(R.id.initsearch);
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+	    SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 		return super.onCreateOptionsMenu(menu);
     }
 

@@ -14,5 +14,6 @@
 	<string name="favoritesmenuopt_title">Favorites</string>
 	<string name="callhist_pageType">History</string>
 	<string name="callfavs_pageType">Favorites</string>
+	<string name="search_hint">Enter keywords here</string>
 	
 </resources>
