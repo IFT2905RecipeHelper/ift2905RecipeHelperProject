@@ -34,7 +34,7 @@
    		     android:maxWidth="50dp"
      	     android:scaleType="fitCenter" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -58,8 +58,9 @@
                 android:minHeight="18dp"
                 android:minWidth="18dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/clock" />
-
+                android:src="@drawable/clock"
+                android:layout_alignParentLeft="true" />
+            
             <TextView
                 android:id="@+id/RecipeTime"
                 android:layout_width="wrap_content"
@@ -67,7 +68,8 @@
                 android:layout_gravity="left"
                 android:layout_marginRight="10dp"
                 android:text="10mins"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:layout_toRightOf="@id/TimerIcon" />
 
             <ImageView
                 android:id="@+id/ServIcon"
@@ -81,7 +83,9 @@
                 android:minHeight="18dp"
                 android:minWidth="18dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/fork" />
+                android:src="@drawable/fork"
+                android:layout_below="@id/RecipeTime"
+                android:layout_alignParentLeft="true" />
 
             <TextView
                 android:id="@+id/RecipeServings"
@@ -90,7 +94,9 @@
                 android:layout_gravity="left"
                 android:layout_marginRight="10dp"
                 android:text="1 serv."
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:layout_below="@id/RecipeTime"
+                android:layout_toRightOf="@id/ServIcon" />
 
             <ImageView
                 android:id="@+id/StarIcon"
@@ -104,7 +110,9 @@
                 android:minHeight="18dp"
                 android:minWidth="18dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/star" />
+                android:src="@drawable/star"
+                android:layout_below="@id/RecipeServings"
+                android:layout_alignParentLeft="true" />
 
             <TextView
                 android:id="@+id/RecipeRating"
@@ -113,8 +121,11 @@
                 android:layout_gravity="left"
                 android:layout_marginRight="10dp"
                 android:text="5/5"
-                android:textSize="18sp" />
-        </LinearLayout>
+                android:textSize="18sp"
+                android:layout_below="@id/RecipeServings"
+                android:layout_toRightOf="@id/StarIcon" />
+            
+        </RelativeLayout>
     </LinearLayout>
 
     <TextView
