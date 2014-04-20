@@ -80,9 +80,7 @@ public class KraftAPI {
 					currentInfo.put("AvgRating", parser.nextText());
 				} else if (tagName.equals("PhotoURL")){
 					currentInfo.put("PhotoURL", parser.nextText());
-				} else if (tagName.equals("TotalCount"));{
-					totalResults = Integer.parseInt(parser.nextText());
-				}
+				} 
 			}
 			
 			recipeStream.close();

@@ -88,6 +88,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
 		@Override
 		public void run() {
+			Log.d("recipehelper", "api failed?");
 			TextView didNotConnect = new TextView(context);
 			didNotConnect.setText("Thank you for using Recipe Helper. Please connect to the internet do that you may search and view recipes.");
 			didNotConnect.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
