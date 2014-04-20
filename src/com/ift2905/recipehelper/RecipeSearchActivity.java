@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -17,12 +18,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
-public class RecipeSearchActivity extends ListActivity {
+public class RecipeSearchActivity extends Activity {
 	int pagesLoaded = 0;
 	String[] gotKeywords;
 	ArrayList<HashMap<String,String>> searchResults = new ArrayList<HashMap<String,String>>();
@@ -31,6 +35,7 @@ public class RecipeSearchActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.search_page_layout);
 		Intent intent = getIntent();
 	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 	      String query = intent.getStringExtra(SearchManager.QUERY);
@@ -47,7 +52,16 @@ public class RecipeSearchActivity extends ListActivity {
 		super.onResume();
 		new updateAPITtask().execute();
 		adapter = new RecipeAdapter(this, searchResults);
-		setListAdapter(adapter);
+		ListView lv = (ListView)findViewById(R.id.resultlist);
+		lv.setAdapter(adapter);
+		Button loadMore = (Button)findViewById(R.id.loadmore);
+		loadMore.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				new updateAPITtask().execute();				
+			}			
+		});
 	}
 	
 	private class RecipeAdapter extends ArrayAdapter<HashMap<String,String>>{

@@ -8,16 +8,11 @@ import java.util.HashMap;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
 
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -44,6 +39,7 @@ public class KraftAPI {
 	String erreur;
 	
 	ArrayList<HashMap<String,String>> searchResults;
+	int totalResults;
 	
 	InputStream recipeStream;
 	KraftAPI(String functionInvoked) throws IOException{
@@ -84,6 +80,8 @@ public class KraftAPI {
 					currentInfo.put("AvgRating", parser.nextText());
 				} else if (tagName.equals("PhotoURL")){
 					currentInfo.put("PhotoURL", parser.nextText());
+				} else if (tagName.equals("TotalCount"));{
+					totalResults = Integer.parseInt(parser.nextText());
 				}
 			}
 			
@@ -194,14 +192,6 @@ public class KraftAPI {
 		return null; //response.getEntity();    		
 	}
 		
-	/*
-	 * Méthode utilitaire qui permet
-	 * d'obtenir une image depuis une URL.
-	 * 
-	 */
-	private Drawable loadHttpImage(String url) throws ClientProtocolException, IOException {
-		return null;
-	}
 	public ArrayList<HashMap<String,String>> getSearchResults(){
 		return searchResults;
 	}

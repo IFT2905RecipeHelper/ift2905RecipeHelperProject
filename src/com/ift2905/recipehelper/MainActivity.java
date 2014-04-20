@@ -76,12 +76,10 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
 		@Override
 		public void run() {
-			Log.d("RecipeHelper", "notifying");
 	        adapter = new SimpleAdapter(context, recipesOfTheWeek, R.layout.recipe_info_layout, from, to);
 	        adapter.setViewBinder(VIEWBINDER);
 	        recipeOfTheWeekList.setAdapter(adapter);
 			((BaseAdapter) recipeOfTheWeekList.getAdapter()).notifyDataSetChanged();
-			Log.d("RecipeHelper", "notified");
 		}
 		
 	});

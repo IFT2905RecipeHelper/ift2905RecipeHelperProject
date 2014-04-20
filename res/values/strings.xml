@@ -15,5 +15,6 @@
 	<string name="callhist_pageType">History</string>
 	<string name="callfavs_pageType">Favorites</string>
 	<string name="search_hint">Enter keywords here</string>
+	<string name="load_more">Load more results?</string>
 	
 </resources>
