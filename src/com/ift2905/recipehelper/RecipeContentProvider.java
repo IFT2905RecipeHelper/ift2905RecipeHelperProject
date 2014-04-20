@@ -62,6 +62,7 @@ public class RecipeContentProvider extends ContentProvider {
 		SQLiteDatabase db = rdh.getWritableDatabase();
 		Cursor cursor = queryBuilder.query(db, projection, selection,
 				selectionArgs, null, null, sortOrder);
+		cursor.moveToFirst();
 		cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
 		return cursor;

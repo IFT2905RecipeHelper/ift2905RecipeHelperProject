@@ -53,10 +53,8 @@ LoaderManager.LoaderCallbacks<Cursor>  {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.d("RecipeHelper", "Called on create");
 		pageType = getIntent().getStringExtra("pageType");
 		super.onCreate(savedInstanceState);	
-		Log.d("RecipeHelper", "Intent message is " + pageType);
 	}
 	
 	protected void onResume(){
@@ -73,10 +71,10 @@ LoaderManager.LoaderCallbacks<Cursor>  {
 		CursorLoader cursorLoader = null;
 		if (pageType.equals("History")){
 			cursorLoader = new CursorLoader(this, RecipeContentProvider.getPageUri(RecipeContentProvider.HISTORY),
-					RecipeDatabaseHelper.histOrFavColumns, null, null, null);
+					FROM, null, null, null);
 		} else if (pageType.equals("Favorites")){
 			cursorLoader = new CursorLoader(this, RecipeContentProvider.getPageUri(RecipeContentProvider.FAVORITES),
-					RecipeDatabaseHelper.histOrFavColumns, null, null, null);
+					FROM, null, null, null);
 		}
 		return cursorLoader;
 	}
@@ -85,7 +83,7 @@ LoaderManager.LoaderCallbacks<Cursor>  {
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		switch (loader.getId()) {
 		case LOADER_ID:
-			adapter.swapCursor(queryResult);
+			adapter.swapCursor(data);
 			break;
 		}
 	}
