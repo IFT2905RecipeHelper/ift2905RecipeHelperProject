@@ -56,7 +56,7 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener {
 		
 		@Override
 		public int getCount() {
-			return 2;
+			return 3;
 		}
 
 		@Override
