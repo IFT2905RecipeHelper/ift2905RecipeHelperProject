@@ -1,25 +1,34 @@
-package com.ift2905.recipehelper;
+package com.example.recipehelper;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.Xml;
-
+import java.io.StringReader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import android.util.Log;
 
 public class KraftAPI {
 	
@@ -195,7 +204,7 @@ public class KraftAPI {
 	public String getXml(String id) {
 		String xml = "" ;
 		try {
-			HttpEntity page = getHttpByID(ID);
+			HttpEntity page = getHttpByID(id);
 			xml = EntityUtils.toString(page,HTTP.UTF_8);
 				 
 		} catch (ClientProtocolException e) {
@@ -242,8 +251,9 @@ public class KraftAPI {
 	                 if(child.getNodeType()==Node.TEXT_NODE )
 	                     return child.getNodeValue();
 	           } 
-	         return "";
-	  }
+	         }
+			return "";
+	}
 	  
 	  private HttpEntity getHttpByID(String id) throws ClientProtocolException, IOException {
 		HttpClient httpClient = new DefaultHttpClient();
