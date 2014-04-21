@@ -1,4 +1,4 @@
-package com.example.olavapayer;
+package com.example.recipehelper;
 
 import android.app.Activity;
 import android.content.Context;
