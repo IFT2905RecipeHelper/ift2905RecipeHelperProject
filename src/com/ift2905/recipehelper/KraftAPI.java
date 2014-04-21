@@ -150,6 +150,7 @@ public class KraftAPI {
 		} 
 	}
 	
+	
 	/*
 	 * Méthode utilitaire qui permet de rapidement
 	 * charger et obtenir une page web depuis
@@ -183,15 +184,71 @@ public class KraftAPI {
 		HttpResponse response = httpClient.execute(http);
 		return response.getEntity();
 	}
-	private HttpEntity getHttpByID(String id) throws ClientProtocolException, IOException {
-		//HttpClient httpClient = new DefaultHttpClient();
-		//HttpGet http = new HttpGet(url);
-		//HttpResponse response = httpClient.execute(http);
-		return null; //response.getEntity();    		
-	}
 		
 	public ArrayList<HashMap<String,String>> getSearchResults(){
 		return searchResults;
 	}
-
+	
+	
+	// Méthode qui établie la connexion HTTP et revoi la String xml de la page
+	
+	public String getXml(String id) {
+		String xml = "" ;
+		try {
+			HttpEntity page = getHttpByID(ID);
+			xml = EntityUtils.toString(page,HTTP.UTF_8);
+				 
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+				
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+       		return xml;
+    	}
+    
+    
+    // Parse la String xml et revoi un Document exploitable par la DOM
+    	public Document getDomElement(String xml){
+        	Document document = null;
+        	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        	try {
+			DocumentBuilder docBuilder = factory.newDocumentBuilder();
+ 
+            		InputSource input = new InputSource();
+                	input.setCharacterStream(new StringReader(xml));
+                	document = docBuilder.parse(input); 
+            	} catch (ParserConfigurationException e) {
+                	Log.e("Error: ", e.getMessage());
+            	} catch (SAXException e) {
+                	Log.e("Error: ", e.getMessage());
+            	} catch (IOException e) {
+                	Log.e("Error: ", e.getMessage());
+            	}
+            	return document;
+	 }
+	 
+	 public String getValue(Element item, String val) {
+	    NodeList n = item.getElementsByTagName(val);        
+	    return this.getElementValue(n.item(0));
+	}
+	 
+	public final String getElementValue( Node element ) {
+	         Node child;
+	         if(element!=null && element.hasChildNodes())
+	         {
+	             for(child=element.getFirstChild(); child!=null; child=child.getNextSibling())
+	             {
+	                 if(child.getNodeType()==Node.TEXT_NODE )
+	                     return child.getNodeValue();
+	           } 
+	         return "";
+	  }
+	  
+	  private HttpEntity getHttpByID(String id) throws ClientProtocolException, IOException {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet http = new HttpGet("http://www.kraftfoods.com/kraftrecipews/kraftRecipeWs.asmx/GetRecipeByRecipeIdFull?recipeId="+id);
+		HttpResponse response = httpClient.execute(http);
+		return response.getEntity();    		
+	}
 }
