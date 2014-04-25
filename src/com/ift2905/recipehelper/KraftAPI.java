@@ -2,7 +2,6 @@ package com.example.recipehelper;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.apache.http.HttpEntity;
@@ -16,19 +15,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.Xml;
-import java.io.StringReader;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import android.util.Log;
 
 public class KraftAPI {
 	
@@ -39,6 +25,7 @@ public class KraftAPI {
 	public static final String ISITEID = "iSiteID=1";
 	public static final String IBRANDID = "iBrandID=1";
 	public static final String ILANGID = "iLangID=1";
+	public static final String STRIPHTML = "bStripHTML=true";
 	public static final String BISRECIPEPHOTOREQUIRED = "bIsRecipePhotoRequired=true";
 	public static final String BISREADYIN30MINS = "bIsReadyIn30Mins=false";
 	
@@ -48,6 +35,11 @@ public class KraftAPI {
 	String erreur;
 	
 	ArrayList<HashMap<String,String>> searchResults;
+	HashMap<String,String> ingredients;
+	ArrayList<String> etapes;
+	HashMap<String,String> description;
+	ArrayList<String> nutritionDetail;
+	
 	int totalResults;
 	
 	InputStream recipeStream;
@@ -102,6 +94,115 @@ public class KraftAPI {
 		} catch (XmlPullParserException e) {
 			Log.d("RecipeHelper", e.getMessage());
 		} 
+	}
+	
+	KraftAPI(String functionInvoked, String id) throws IOException, XmlPullParserException
+	{
+		if (!(functionInvoked.equals(SEARCHBYID))){ 
+			throw new IllegalArgumentException("Incorrect page invoked. Either page does not exist, or there are missing args.");
+		}
+		try {
+			recipeStream = getHttpByID(id).getContent();
+			
+			XmlPullParser parser = Xml.newPullParser();
+			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+			parser.setInput(recipeStream, null);
+			parser.nextTag();
+			
+			ingredients = new HashMap<String,String>();
+			etapes = new ArrayList<String>();
+			description = new HashMap<String,String>();
+			nutritionDetail = new ArrayList<String>();
+
+			parser.require(XmlPullParser.START_TAG, null, "RecipeDetailResponse");
+
+			String ing="",ing_id="", ing_qty="";
+			
+			while (parser.next() != XmlPullParser.END_DOCUMENT){
+				String tagName = parser.getName();
+				if (parser.getEventType() != XmlPullParser.START_TAG){
+					continue;
+				} 
+				
+				//Ingredients
+				else if (tagName.equals("RecipeIngredientID")){
+					ing_id = parser.nextText(); 
+				} else if (tagName.equals("IngredientName")){
+					ing = parser.nextText();
+				} else if (tagName.equals("QuantityText")){
+					ing_qty = parser.nextText();
+				} else if (tagName.equals("QuantityUnit")){
+					ingredients.put(ing_id, ing_qty + " " + parser.nextText() + " of " + ing);
+				} 
+				//Description
+				else if (tagName.equals("RecipeID")){
+					description.put("RecipeID", parser.nextText());
+				}else if (tagName.equals("RecipeName")){
+					description.put("RecipeName", parser.nextText());
+				} else if (tagName.equals("TotalTime")){
+					description.put("TotalTime", parser.nextText());
+				} else if (tagName.equals("NumberOfServings")){
+					description.put("NumberOfServings", parser.nextText());
+				} else if (tagName.equals("AvgRating")){
+					description.put("AvgRating", parser.nextText());
+				} else if (tagName.equals("PhotoURL")){
+					description.put("PhotoURL", parser.nextText());
+				}
+				
+				//Etapes
+				else if(tagName.equals("PreparationDetails"))
+				{
+					while(!(parser.next() == XmlPullParser.END_TAG && parser.getName().equals("PreparationDetails")))
+					{
+						if (parser.getEventType() != XmlPullParser.START_TAG)
+						{
+							continue;
+						} else if(parser.getName().equals("Description"))
+							{
+							etapes.add(parser.nextText());
+							}
+					}
+					
+				}
+				
+				//Nutritions
+				else if(tagName.equals("NutritionItemDetails"))
+				{
+					String nutri="";
+					while(!(parser.next() == XmlPullParser.END_TAG && parser.getName().equals("NutritionItemDetails")))
+					{
+						if (parser.getEventType() != XmlPullParser.START_TAG)
+						{
+							continue;
+						} else if(parser.getName().equals("NutritionItemName"))
+						{
+							nutri=parser.nextText();
+						} else if(parser.getName().equals("Quantity"))
+						{
+							nutri+= ": " + parser.nextText();
+
+						}else if(parser.getName().equals("Unit"))
+						{
+							nutri+=parser.nextText();
+							nutritionDetail.add(nutri);
+						}
+					}
+				}
+				
+			}
+
+			recipeStream.close();
+		}catch (ClientProtocolException e) {
+			Log.d("RecipeHelper", "Erreur HTTP (protocole) :"+e.getMessage());
+			throw e;
+		} catch (IOException e) {
+			Log.d("RecipeHelper", "Erreur HTTP (IO) :"+e.getMessage());
+			throw e;
+		} catch (XmlPullParserException e) {
+			Log.d("RecipeHelper", e.getMessage());
+			throw e;
+		}
+		
 	}
 	
 	KraftAPI (String functionInvoked, String[] keywords, int pageToLoad) throws IOException, XmlPullParserException{
@@ -193,13 +294,21 @@ public class KraftAPI {
 		HttpResponse response = httpClient.execute(http);
 		return response.getEntity();
 	}
+	
+	private HttpEntity getHttpByID(String id) throws ClientProtocolException, IOException {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet http = new HttpGet(URLSTART + SEARCHBYID
+				+ "?" + "iRecipeID=" + id + "&" + STRIPHTML + "&" + IBRANDID + "&" + ILANGID);
+		HttpResponse response = httpClient.execute(http);
+		return response.getEntity();    		
+	}
 		
 	public ArrayList<HashMap<String,String>> getSearchResults(){
 		return searchResults;
 	}
 	
 	
-	// Méthode qui établie la connexion HTTP et revoi la String xml de la page
+/*	// Méthode qui établie la connexion HTTP et revoi la String xml de la page
 	
 	public String getXml(String id) {
 		String xml = "" ;
@@ -253,12 +362,5 @@ public class KraftAPI {
 	           } 
 	         }
 			return "";
-	}
-	  
-	  private HttpEntity getHttpByID(String id) throws ClientProtocolException, IOException {
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpGet http = new HttpGet("http://www.kraftfoods.com/kraftrecipews/kraftRecipeWs.asmx/GetRecipeByRecipeIdFull?recipeId="+id);
-		HttpResponse response = httpClient.execute(http);
-		return response.getEntity();    		
-	}
+	}    */
 }
