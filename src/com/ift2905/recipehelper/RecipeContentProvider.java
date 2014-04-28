@@ -36,6 +36,7 @@ public class RecipeContentProvider extends ContentProvider {
 	@Override
 	public boolean onCreate() {
 		rdh = new RecipeDatabaseHelper(getContext());
+		Log.d("contentprovider","created.");
 		return true;
 	}
 
