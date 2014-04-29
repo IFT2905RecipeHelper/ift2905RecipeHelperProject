@@ -159,7 +159,7 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 
 		getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main_2);
 
 		favoriButton = (Button)findViewById(R.id.favoriButton);
 
