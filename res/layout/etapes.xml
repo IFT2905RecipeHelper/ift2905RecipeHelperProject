@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:text="TextView"
-                android:textSize="17sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
     </ScrollView>
@@ -53,7 +53,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="" />
+                android:text=""
+                android:typeface="serif" />
 
             <Button
                 android:id="@+id/PauseContinue"
@@ -61,7 +62,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="" />
+                android:text=""
+                android:typeface="serif" />
 
         </LinearLayout>
 
