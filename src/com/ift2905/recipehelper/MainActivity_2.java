@@ -387,7 +387,7 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 			valFav.put(RecipeDatabaseHelper.favoriColumns[3], (recette.description).get("NumberOfServings"));
 			valFav.put(RecipeDatabaseHelper.favoriColumns[4], (recette.description).get("AvgRating"));
 
-			resolverFav.insert(RecipeContentProvider.CONTENT_URI_FAV, valFav);
+			resolverFav.insert(RecipeContentProvider.getPageUri(RecipeContentProvider.FAVORITES), valFav);
 
 			Log.d("OK", "BDD_Fav");
 			Toast.makeText(ctx,"Added to favorites list ",Toast.LENGTH_SHORT).show();
@@ -448,7 +448,7 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 			valHis.put(RecipeDatabaseHelper.historyColumns[3], (api.description).get("NumberOfServings"));
 			valHis.put(RecipeDatabaseHelper.historyColumns[4], (api.description).get("AvgRating"));
 
-			resolverHis.insert(RecipeContentProvider.CONTENT_URI_HIS, valHis);
+			resolverHis.insert(RecipeContentProvider.getPageUri(RecipeContentProvider.HISTORY), valHis);
 			Log.d("OK", "BDD_His");
 
 			Log.d((api.description).get("PhotoURL"),"BAD");
