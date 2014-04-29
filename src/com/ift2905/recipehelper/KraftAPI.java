@@ -39,6 +39,7 @@ public class KraftAPI {
 	ArrayList<String> etapes;
 	HashMap<String,String> description;
 	ArrayList<String> nutritionDetail;
+	public static String nbServing="";
 	
 	int totalResults;
 	
@@ -103,52 +104,76 @@ public class KraftAPI {
 		}
 		try {
 			recipeStream = getHttpByID(id).getContent();
-			
+			String ing_name="",ing_id="", ing_qty="", nutri="";
+
+
+
 			XmlPullParser parser = Xml.newPullParser();
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 			parser.setInput(recipeStream, null);
+			Log.d("RecipeHelper", "setInput has been passed");
 			parser.nextTag();
-			
+			Log.d("RecipeHelper", "nextTag has been passed");
+
 			ingredients = new HashMap<String,String>();
 			etapes = new ArrayList<String>();
 			description = new HashMap<String,String>();
 			nutritionDetail = new ArrayList<String>();
 
 			parser.require(XmlPullParser.START_TAG, null, "RecipeDetailResponse");
+			Log.d("RecipeHelper", "Required has been passed");
 
-			String ing="",ing_id="", ing_qty="";
-			
-			while (parser.next() != XmlPullParser.END_DOCUMENT){
+			while (parser.next() != XmlPullParser.END_DOCUMENT)
+			{
 				String tagName = parser.getName();
+				Log.d("RecipeHelper","Found a tag called" + tagName);
+
 				if (parser.getEventType() != XmlPullParser.START_TAG){
 					continue;
 				} 
-				
-				//Ingredients
-				else if (tagName.equals("RecipeIngredientID")){
-					ing_id = parser.nextText(); 
-				} else if (tagName.equals("IngredientName")){
-					ing = parser.nextText();
-				} else if (tagName.equals("QuantityText")){
-					ing_qty = parser.nextText();
-				} else if (tagName.equals("QuantityUnit")){
-					ingredients.put(ing_id, ing_qty + " " + parser.nextText() + " of " + ing);
-				} 
 				//Description
-				else if (tagName.equals("RecipeID")){
+				else if (parser.getName().equals("RecipeID")){
 					description.put("RecipeID", parser.nextText());
-				}else if (tagName.equals("RecipeName")){
+				}else if (parser.getName().equals("RecipeName")){
 					description.put("RecipeName", parser.nextText());
-				} else if (tagName.equals("TotalTime")){
+				} else if (parser.getName().equals("TotalTime")){
 					description.put("TotalTime", parser.nextText());
-				} else if (tagName.equals("NumberOfServings")){
+				} else if (parser.getName().equals("NumberOfServings")){
 					description.put("NumberOfServings", parser.nextText());
-				} else if (tagName.equals("AvgRating")){
+				} else if (parser.getName().equals("AvgRating")){
 					description.put("AvgRating", parser.nextText());
-				} else if (tagName.equals("PhotoURL")){
+				} else if (parser.getName().equals("PhotoURL")){
 					description.put("PhotoURL", parser.nextText());
+					Log.d("KraftAPI_URLFounded", description.get("PhotoURL"));
 				}
-				
+
+				//Ingredients
+
+				else if(tagName.equals("IngredientDetails"))
+				{
+
+					while(!(parser.next() == XmlPullParser.END_TAG && parser.getName().equals("IngredientDetails")))
+					{
+						if (parser.getEventType() != XmlPullParser.START_TAG)
+						{
+							continue;
+						}
+						else if (parser.getName().equals("RecipeIngredientID")){
+							ing_id = parser.nextText(); 
+							Log.d("Ok", parser.getName());
+						} else if (parser.getName().equals("IngredientName")){
+							ing_name = parser.nextText();
+							Log.d("Ok", parser.getName());
+						} else if (parser.getName().equals("QuantityText")){
+							ing_qty = parser.nextText();
+							Log.d("Ok", parser.getName());
+						} else if (parser.getName().equals("QuantityUnit")){
+							ingredients.put(ing_id , ing_qty + " " + parser.nextText() + " of " + ing_name);
+							Log.d("Ok", parser.getName());
+						}
+					}
+				}
+
 				//Etapes
 				else if(tagName.equals("PreparationDetails"))
 				{
@@ -158,17 +183,17 @@ public class KraftAPI {
 						{
 							continue;
 						} else if(parser.getName().equals("Description"))
-							{
+						{
 							etapes.add(parser.nextText());
-							}
+							Log.d("Ok", "Etapes");
+						}
 					}
-					
+
 				}
-				
+
 				//Nutritions
 				else if(tagName.equals("NutritionItemDetails"))
 				{
-					String nutri="";
 					while(!(parser.next() == XmlPullParser.END_TAG && parser.getName().equals("NutritionItemDetails")))
 					{
 						if (parser.getEventType() != XmlPullParser.START_TAG)
@@ -177,18 +202,20 @@ public class KraftAPI {
 						} else if(parser.getName().equals("NutritionItemName"))
 						{
 							nutri=parser.nextText();
+							Log.d("Ok", parser.getName());
 						} else if(parser.getName().equals("Quantity"))
 						{
 							nutri+= ": " + parser.nextText();
+							Log.d("Ok", parser.getName());
 
 						}else if(parser.getName().equals("Unit"))
 						{
 							nutri+=parser.nextText();
 							nutritionDetail.add(nutri);
+							Log.d("Ok", parser.getName());
 						}
 					}
 				}
-				
 			}
 
 			recipeStream.close();
@@ -202,7 +229,6 @@ public class KraftAPI {
 			Log.d("RecipeHelper", e.getMessage());
 			throw e;
 		}
-		
 	}
 	
 	KraftAPI (String functionInvoked, String[] keywords, int pageToLoad) throws IOException, XmlPullParserException{
@@ -307,60 +333,19 @@ public class KraftAPI {
 		return searchResults;
 	}
 	
-	
-/*	// Méthode qui établie la connexion HTTP et revoi la String xml de la page
-	
-	public String getXml(String id) {
-		String xml = "" ;
-		try {
-			HttpEntity page = getHttpByID(id);
-			xml = EntityUtils.toString(page,HTTP.UTF_8);
-				 
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-				
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-       		return xml;
-    	}
-    
-    
-    // Parse la String xml et revoi un Document exploitable par la DOM
-    	public Document getDomElement(String xml){
-        	Document document = null;
-        	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        	try {
-			DocumentBuilder docBuilder = factory.newDocumentBuilder();
- 
-            		InputSource input = new InputSource();
-                	input.setCharacterStream(new StringReader(xml));
-                	document = docBuilder.parse(input); 
-            	} catch (ParserConfigurationException e) {
-                	Log.e("Error: ", e.getMessage());
-            	} catch (SAXException e) {
-                	Log.e("Error: ", e.getMessage());
-            	} catch (IOException e) {
-                	Log.e("Error: ", e.getMessage());
-            	}
-            	return document;
-	 }
-	 
-	 public String getValue(Element item, String val) {
-	    NodeList n = item.getElementsByTagName(val);        
-	    return this.getElementValue(n.item(0));
+	public HashMap<String,String> getIngredients(){
+		return ingredients;
 	}
-	 
-	public final String getElementValue( Node element ) {
-	         Node child;
-	         if(element!=null && element.hasChildNodes())
-	         {
-	             for(child=element.getFirstChild(); child!=null; child=child.getNextSibling())
-	             {
-	                 if(child.getNodeType()==Node.TEXT_NODE )
-	                     return child.getNodeValue();
-	           } 
-	         }
-			return "";
-	}    */
+
+	public ArrayList<String> getEtapes(){
+		return etapes;
+	}
+
+	public HashMap<String,String> getDescription(){
+		return description;
+	}
+
+	public ArrayList<String> getNutritionDetails(){
+		return nutritionDetail;
+	}
 }
