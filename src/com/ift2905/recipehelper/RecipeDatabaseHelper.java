@@ -26,9 +26,10 @@ public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 		
 		db.execSQL(createShopListTable);
 		
+		String createTable = null;
 		for (int i = 1; i < tableNames.length; i++)
 		{
-			String createTable = "create table " + tableNames[i] + " ("
+			createTable = "create table " + tableNames[i] + " ("
 				+ histOrFavColumns[0] + " integer primary key, "
 				+ histOrFavColumns[1] + " text, "
 				+ histOrFavColumns[2] + " text, "
