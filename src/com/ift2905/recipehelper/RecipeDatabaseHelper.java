@@ -9,9 +9,8 @@ public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 
 	static final String[] tableNames = {"shop_list", "history","favorites"};
 	static final String[] shopListColumns = {"_id", "ingredient","from_recipe"};
-	static final String[] historyColumns = {"_id", "recipe_name", "cooking_time", "servings", "rating"};
-	static final String[] favoriColumns = {"_id", "recipe_name", "cooking_time", "servings", "rating"};
-	
+	static final String[] histOrFavColumns = {"_id", "recipe_name", "cooking_time", "servings", "rating"};
+
 	Context context;
 	public RecipeDatabaseHelper(Context context) {
 		super(context, "recipe.db", null, 1);
@@ -27,23 +26,17 @@ public class RecipeDatabaseHelper extends SQLiteOpenHelper {
 		
 		db.execSQL(createShopListTable);
 		
-		String historyTable = "create table " + tableNames[1] + " ("
-				+ historyColumns[0] + " integer primary key, "
-				+ historyColumns[1] + " text, "
-				+ historyColumns[2] + " text, "
-				+ historyColumns[3] + " text, "
-				+ historyColumns[4] + " text)";
+		for (int i = 1; i < tableNames.length; i++)
+		{
+			String createTable = "create table " + tableNames[i] + " ("
+				+ histOrFavColumns[0] + " integer primary key, "
+				+ histOrFavColumns[1] + " text, "
+				+ histOrFavColumns[2] + " text, "
+				+ histOrFavColumns[3] + " text, "
+				+ histOrFavColumns[4] + " text)";
+		}
 			
-		db.execSQL(historyTable);
-			
-		String favoriTable = "create table " + tableNames[2] + " ("
-				+ favoriColumns[0] + " integer primary key, "
-				+ favoriColumns[1] + " text, "
-				+ favoriColumns[2] + " text, "
-				+ favoriColumns[3] + " text, "
-				+ favoriColumns[4] + " text)";
-			
-		db.execSQL(favoriTable);
+		db.execSQL(createTable);
 	}
 
 	@Override
