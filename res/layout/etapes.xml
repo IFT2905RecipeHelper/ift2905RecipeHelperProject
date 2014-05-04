@@ -8,9 +8,10 @@
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" >
+        android:layout_weight="2" >
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/RelativeLayout1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
@@ -20,19 +21,69 @@
                 style="@style/CodeFont"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
                 android:paddingLeft="10dp"
+                android:paddingTop="5dp"
                 android:text="TextView"
                 android:textSize="14sp" />
 
-        </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="1"
         android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/editHours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.5"
+                android:ems="10"
+                android:hint="hours"
+                android:inputType="number"
+                android:typeface="serif" >
+
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:id="@+id/editMinutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.5"
+                android:ems="10"
+                android:hint="mins"
+                android:inputType="number"
+                android:typeface="serif" />
+
+            <EditText
+                android:id="@+id/editSeconds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.5"
+                android:ems="10"
+                android:hint="secs"
+                android:inputType="time"
+                android:typeface="serif" />
+
+            <Button
+                android:id="@+id/SetTime"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="-0.3"
+                android:text="Set"
+                android:typeface="serif" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/minuteurView"
@@ -40,7 +91,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="00:00:00"
-            android:textSize="40dp" />
+            android:textSize="31dp"
+            android:typeface="serif" />
 
         <LinearLayout
             android:layout_width="150dp"
@@ -51,7 +103,7 @@
                 android:id="@+id/SetReset"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:text=""
                 android:typeface="serif" />
@@ -60,13 +112,11 @@
                 android:id="@+id/PauseContinue"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:text=""
                 android:typeface="serif" />
-
         </LinearLayout>
-
     </LinearLayout>
 
 </LinearLayout>
