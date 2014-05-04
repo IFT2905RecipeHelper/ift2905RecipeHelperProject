@@ -1,5 +1,6 @@
 package com.example.recipehelper;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,12 +57,13 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 	private TextView tempsRecette;
 	private TextView nutritionRecette;
 	private TextView nbServingRecette;
-	private TextView avgRecette;
+	private RatingBar bar;
 	private ImageView icone;
 
 	private KraftAPI recette=null;
 	private String recipe_id="50257";
 	private String nbServing="";
+	private String rating="";
 	private String acc="";
 	private String ncc="";
 	private String test="";
@@ -156,7 +159,7 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 		nomRecette=(TextView)findViewById(R.id.RecipeName);
 		tempsRecette=(TextView)findViewById(R.id.RecipeTime);
 		icone=(ImageView)findViewById(R.id.RecipeIcone);
-		avgRecette=(TextView)findViewById(R.id.RecipeRatingBar);
+		bar=(RatingBar)findViewById(R.id.ratingBar);
 
 		favoriButton = (Button)findViewById(R.id.favoriButton);
 		favoriButton.setOnClickListener(this);
@@ -198,8 +201,14 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 					}
 				});
 
-		new DownloadLoginTask().execute();
 	}
+	
+	@Override
+    protected void onResume(){
+    	super.onResume();
+		new DownloadLoginTask().execute();
+
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -550,10 +559,12 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 
 			//NumbersOfServings
 			nbServing=(api.description).get("NumberOfServings");
+			rating=(api.description).get("AvgRating");
 
 			nomRecette.setText((api.description).get("RecipeName"));
 			tempsRecette.setText((api.description).get("TotalTime") + " minutes");
-			avgRecette.setText("note: "+(api.description).get("AvgRating")+"/5");
+			bar.setRating(Float.valueOf(rating));
+
 			nbServingRecette.setText(nbServing);
 
 			ContentResolver resolverHis = getContentResolver();
