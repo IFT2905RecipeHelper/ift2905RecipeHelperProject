@@ -21,11 +21,11 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="17sp"
             android:textStyle="bold"
+            android:textColor="#191919"
             android:typeface="serif" />
 
         <ListView
             android:id="@+id/listView1"
-            style="@style/CodeFont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" >
@@ -45,7 +45,8 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:text="Go to the shopping list"
-            android:typeface="serif" />
+            android:typeface="serif"
+            android:textColor="#191919"/>
     </LinearLayout>
 
 </LinearLayout>
