@@ -137,8 +137,8 @@ public class SLListActivity extends ListActivity implements LoaderManager.Loader
 					String ingredient = c.getString(c.getColumnIndex(RecipeDatabaseHelper.shopListColumns[1]));
 					String recipe = c.getString(c.getColumnIndex(RecipeDatabaseHelper.shopListColumns[2]));
 					ContentResolver resolver = getContentResolver();
-					resolver.delete(RecipeContentProvider.getPageUri(RecipeContentProvider.SHOPPINGLIST), RecipeDatabaseHelper.shopListColumns[1]+" = '"+ingredient+"'"
-							+ " AND "+RecipeDatabaseHelper.shopListColumns[2]+" = '"+recipe+"'", null);
+					resolver.delete(RecipeContentProvider.getPageUri(RecipeContentProvider.SHOPPINGLIST), RecipeDatabaseHelper.shopListColumns[1]+" = ?"
+							+ " AND "+RecipeDatabaseHelper.shopListColumns[2]+" = ?", new String[]{ingredient, recipe});
 				}
 				
 			});
