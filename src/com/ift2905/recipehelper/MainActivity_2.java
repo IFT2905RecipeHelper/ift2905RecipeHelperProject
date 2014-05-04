@@ -35,6 +35,7 @@ import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -46,6 +47,7 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 
 	private ViewPager pager;
 	private MonPagerAdapter monAdapter;
+	private LinearLayout recetteInfo;
 	private Context ctx;
 
 	private TextView etapeRecette;
@@ -64,22 +66,30 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 	private String test="";
 
 	private Button favoriButton;
+	private Button showListButton;
+
 
 	private ArrayList<String> ingredientList = new ArrayList<String>();
+	private ArrayList<String> ingredientNameList = new ArrayList<String>();
+	private ArrayList<String> ingredientIDList = new ArrayList<String>();
+
 	private ListView listView1;
 	private IngredientAdapter mainAdapter;
 
 	// Minuteur
-	TextView text;
+	private TextView text;
 	long starttime = 0;
 	long pauseTime=0;
 	long resumeTime=0;
-	String b2State="pause";
-	Button b2;
-	Button b;
-	//il faut que tu set rTime avec les entrées EN SECONDES
-	int rTime=10;
-	Timer timer = new Timer();
+	private String b2State="pause";
+	private Button b2;
+	private Button b;
+	private Button setTime;
+	private EditText Ehours;
+	private EditText Eminutes;
+	private EditText Eseconds;
+	private int rTime=0;
+	private Timer timer = new Timer();
 
 	final Handler h = new Handler(new Callback() {
 
@@ -88,10 +98,21 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 			long millis = System.currentTimeMillis() - starttime;
 			int seconds = (int) (millis / 1000); 
 			seconds=rTime-seconds;
-			int minutes = seconds / 60;
+			int heures= seconds / 3600;
+			int minutes;
+			if(heures>=1)
+				minutes = (seconds-heures*3600) / 60;
+			else minutes = seconds / 60;
 			seconds     = seconds % 60;
+
+			String her="";
 			String min="";
-			String sec="";    	  
+			String sec="";   
+
+			if((""+heures).length()==1)
+				her="0"+heures;
+			else
+				her=""+heures;  
 			if((""+minutes).length()==1)
 				min="0"+minutes;
 			else
@@ -101,32 +122,12 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 			else
 				sec=""+seconds;
 
-			text.setText(min+":"+sec);
-			if(seconds==0){
+			text.setText(her+":"+min+":"+sec);
+			if(seconds==0&& minutes==0&& heures==0){
 				timer.cancel();
 				timer.purge();
-				b.setText("start");					
+				b.setText("start");	
 			}
-			return false;
-		}
-	});
-	//remise a ziwow
-	final Handler h2 = new Handler(new Callback() {
-
-		@Override
-		public boolean handleMessage(Message msg) {
-			String min="";
-			String sec="";    	  
-			if((""+rTime/60).length()==1)
-				min="0"+rTime/60;
-			else
-				min=""+rTime/60;    	      	  
-			if((""+rTime%60).length()==1)
-				sec="0"+rTime%60;
-			else
-				sec=""+rTime%60;
-
-			text.setText(min+":"+sec);
 			return false;
 		}
 	});
@@ -140,36 +141,25 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 		}
 	};
 
-	class resetTask extends TimerTask {
-
-		@Override
-		public void run() {
-			h2.sendEmptyMessage(0);
-		}
-	};
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-
-
 		ctx=this;
 
 		getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
 		setContentView(R.layout.activity_main_2);
 
-		favoriButton = (Button)findViewById(R.id.favoriButton);
+		recetteInfo=(LinearLayout)findViewById(R.id.recetteInfo);
 
 		nomRecette=(TextView)findViewById(R.id.RecipeName);
 		tempsRecette=(TextView)findViewById(R.id.RecipeTime);
 		icone=(ImageView)findViewById(R.id.RecipeIcone);
 		avgRecette=(TextView)findViewById(R.id.RecipeRatingBar);
 
+		favoriButton = (Button)findViewById(R.id.favoriButton);
 		favoriButton.setOnClickListener(this);
-
 
 		pager=(ViewPager)findViewById(R.id.awesomepager);
 		monAdapter = new MonPagerAdapter();
@@ -213,7 +203,6 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
@@ -254,9 +243,10 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 				page=(LinearLayout)inflater.inflate(R.layout.description, null);
 				nbServingRecette=(TextView) page.findViewById(R.id.nbServing);
 				nutritionRecette=(TextView) page.findViewById(R.id.nutrition);
-				
+
 				nbServingRecette.setText(nbServing);
 				nutritionRecette.setText(ncc);
+
 			} 
 			else if(position==1)
 			{
@@ -264,32 +254,110 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 				mainAdapter = new IngredientAdapter(ingredientList,ctx,inflater);
 				listView1 = (ListView) page.findViewById(R.id.listView1);
 				listView1.setAdapter(mainAdapter);
+				showListButton = (Button) page.findViewById(R.id.showListButton);
+
+				showListButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) 
+					{
+						Button showListButton = (Button)v;
+
+					}
+				});
+
 			}
 			else if(position==2)
 			{
 				page=(LinearLayout)inflater.inflate(R.layout.etapes, null);
 				etapeRecette=(TextView) page.findViewById(R.id.textViewEtapes);
 				etapeRecette.setText(acc);
-				
+
 				//Minuteur Code
-				text = (TextView)page.findViewById(R.id.minuteurView);
-				//the text
-				String min="";
-				String sec="";    	  
-				if((""+rTime/60).length()==1)
-					min="0"+rTime/60;
-				else
-					min=""+rTime/60;    	      	  
-				if((""+rTime%60).length()==1)
-					sec="0"+rTime%60;
-				else
-					sec=""+rTime%60;
-				text.setText(min+":"+sec);
+				text = (TextView) page.findViewById(R.id.minuteurView);
+				Ehours = (EditText) page.findViewById(R.id.editHours);
+				Eminutes = (EditText) page.findViewById(R.id.editMinutes);
+				Eseconds = (EditText) page.findViewById(R.id.editSeconds);
+				setTime = (Button) page.findViewById(R.id.SetTime);
+
+				setTime.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) 
+					{
+						int heuresEntree=0, minutesEntree=0, secondsEntree=0;
+
+						if(!Ehours.getText().toString().equals("")){
+							heuresEntree = Integer.parseInt(Ehours.getText().toString());}
+
+						if(!Eminutes.getText().toString().equals("")){
+							minutesEntree = Integer.parseInt(Eminutes.getText().toString());}
+
+						if(!Eseconds.getText().toString().equals("")){
+							secondsEntree = Integer.parseInt(Eseconds.getText().toString());}
+
+						// TODO Auto-generated method stub
+						if( heuresEntree >= 0 )
+						{
+						} else {
+							Context context = getApplicationContext();
+							CharSequence text = "Entree invalide pour les heures";
+							int duration = Toast.LENGTH_SHORT;
+							Toast toast = Toast.makeText(context, text, duration);
+							toast.show(); 
+						}
+
+						if( minutesEntree >= 0 && minutesEntree < 60)
+						{
+						} else {
+							Context context = getApplicationContext();
+							CharSequence text = "Entree invalide les minutes";
+							int duration = Toast.LENGTH_SHORT;
+							Toast toast = Toast.makeText(context, text, duration);
+							toast.show(); 
+						}
+
+						if(secondsEntree >= 0 && secondsEntree < 60)
+						{
+						} else {
+							Context context = getApplicationContext();
+							CharSequence text = "Entree invalide pour les secondes";
+							int duration = Toast.LENGTH_SHORT;
+							Toast toast = Toast.makeText(context, text, duration);
+							toast.show(); 
+						}
+						Ehours.setVisibility(View.INVISIBLE);
+						Eminutes.setVisibility(View.INVISIBLE);
+						Eseconds.setVisibility(View.INVISIBLE);
+						setTime.setVisibility(View.INVISIBLE);
+
+						rTime= heuresEntree*3600 + 	minutesEntree*60 + secondsEntree;
+						
+						String her="";
+						String min="";
+						String sec="";
+						if((""+rTime/3600).length()==1)
+							her="0"+rTime/3600;
+						else
+							her=""+rTime/3600;
+						if((""+(rTime- (rTime/3600)*3600)/60).length()==1)
+							min="0"+((rTime- (rTime/3600)*3600)/60);
+						else
+							min=""+((rTime- (rTime/3600)*3600)/60);
+
+
+						if((""+rTime%60).length()==1)
+							sec="0"+rTime%60;
+						else
+							sec=""+rTime%60;
+						text.setText(her+":"+min+":"+sec);
+
+					}
+				});
 
 				b = (Button)page.findViewById(R.id.SetReset);
 				b.setText("start");
 				b2 = (Button)page.findViewById(R.id.PauseContinue);
 				b2.setText("pause");
+				
 				b.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -300,34 +368,59 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 								timer.purge();
 								b2.setText("pause");
 								//timer = new Timer();
-							}else{
+							}else
+							{
 								timer.cancel();
-								timer.purge();}
+								timer.purge();
+							}
 
-							//  timer.schedule(new resetTask(), 0,500);  
-
+							String her="";
 							String min="";
-							String sec="";    	  
-							if((""+rTime/60).length()==1)
-								min="0"+rTime/60;
+							String sec="";
+							if((""+rTime/3600).length()==1)
+								her="0"+rTime/3600;
 							else
-								min=""+rTime/60;    	      	  
+								her=""+rTime/3600;
+							if((""+(rTime- (rTime/3600)*3600)/60).length()==1)
+								min="0"+((rTime- (rTime/3600)*3600)/60);
+							else
+								min=""+((rTime- (rTime/3600)*3600)/60);
+
+
 							if((""+rTime%60).length()==1)
 								sec="0"+rTime%60;
 							else
 								sec=""+rTime%60;
+							text.setText(her+":"+min+":"+sec);
+							
+							Ehours.setVisibility(View.VISIBLE);
+							Eminutes.setVisibility(View.VISIBLE);
+							Eseconds.setVisibility(View.VISIBLE);
+							setTime.setVisibility(View.VISIBLE);
 
-							text.setText(min+":"+sec);
 							b.setText("start");
-						}else /*if(b.getTag().equals(start))*/{
+
+						}else
+						{
 							starttime = System.currentTimeMillis();
 							timer = new Timer();
 							timer.schedule(new firstTask(), 0,500);
+							
+							Ehours.setVisibility(View.INVISIBLE);
+							Eminutes.setVisibility(View.INVISIBLE);
+							Eseconds.setVisibility(View.INVISIBLE);
+							setTime.setVisibility(View.INVISIBLE);
+							
+							
+							
 							b.setText("reset");
+
+							
 						}
 
 					}
 				});
+				
 				b2.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -370,28 +463,44 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 	public void onPageScrolled(int arg0, float arg1, int arg2) { }
 	@Override
 	public void onPageSelected(int position) { }	
-	
+
 	public void onPause() {super.onPause();}
 
 
-	public void onClick(View v) {
+	public void onClick(View v) {		
+		favoriButton = (Button)v;
 
-		switch( v.getId() ) {
-		case R.id.favoriButton:
-			ContentResolver resolverFav = getContentResolver();
+		ContentResolver resolverFav = getContentResolver();
+
+		if(favoriButton.getText().equals("Add to favorites"))
+		{
 			ContentValues valFav = new ContentValues();
 			valFav.clear();
-			valFav.put(RecipeDatabaseHelper.favoriColumns[0],(recette.description).get("RecipeID"));
-			valFav.put(RecipeDatabaseHelper.favoriColumns[1], (recette.description).get("RecipeName"));
-			valFav.put(RecipeDatabaseHelper.favoriColumns[2], (recette.description).get("TotalTime"));
-			valFav.put(RecipeDatabaseHelper.favoriColumns[3], (recette.description).get("NumberOfServings"));
-			valFav.put(RecipeDatabaseHelper.favoriColumns[4], (recette.description).get("AvgRating"));
+			valFav.put(RecipeDatabaseHelper.histOrFavColumns[0],(recette.description).get("RecipeID"));
+			valFav.put(RecipeDatabaseHelper.histOrFavColumns[1], (recette.description).get("RecipeName"));
+			valFav.put(RecipeDatabaseHelper.histOrFavColumns[2], (recette.description).get("TotalTime"));
+			valFav.put(RecipeDatabaseHelper.histOrFavColumns[3], (recette.description).get("NumberOfServings"));
+			valFav.put(RecipeDatabaseHelper.histOrFavColumns[4], (recette.description).get("AvgRating"));
 
 			resolverFav.insert(RecipeContentProvider.getPageUri(RecipeContentProvider.FAVORITES), valFav);
 
-			Log.d("OK", "BDD_Fav");
-			Toast.makeText(ctx,"Added to favorites list ",Toast.LENGTH_SHORT).show();
-			break;
+			Log.d("OK", "BDD_Fav_ADD");
+			Toast.makeText(ctx,"Added to favorites",Toast.LENGTH_SHORT).show();
+
+			favoriButton.setText("Remove from favorites");
+			//favoriButton.setBackgroundColor(Color.rgb(255,255,153));
+		}
+		else
+		{
+
+			resolverFav.delete(RecipeContentProvider.getPageUri(RecipeContentProvider.FAVORITES), "_id="+(recette.description).get("RecipeID"), null);
+
+			Log.d("OK", "BDD_Fav_SUPP");
+			Toast.makeText(ctx,"Removed from favorites",Toast.LENGTH_SHORT).show();
+
+			favoriButton.setText("Add to favorites");
+
+
 		}
 	}
 
@@ -401,6 +510,10 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 
 		protected void onPreExecute() {
 			setProgressBarIndeterminateVisibility(true);
+			recetteInfo.setVisibility(View.INVISIBLE);
+			pager.setVisibility(View.INVISIBLE);
+
+
 		}
 
 		protected KraftAPI doInBackground(String... params) {
@@ -423,14 +536,17 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 			setProgressBarIndeterminateVisibility(false);
 
 			if( api == null ) {
-				Toast.makeText(MainActivity_2.this, "FatalError", Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "Oups!", Toast.LENGTH_SHORT).show();
 				return;
 			}
 
 			if( api.erreur != null ) {
-				Toast.makeText(MainActivity_2.this, api.erreur, Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, api.erreur, Toast.LENGTH_SHORT).show();
 				return;
 			}
+			recetteInfo.setVisibility(View.VISIBLE);
+			pager.setVisibility(View.VISIBLE);
+
 
 			//NumbersOfServings
 			nbServing=(api.description).get("NumberOfServings");
@@ -438,15 +554,16 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 			nomRecette.setText((api.description).get("RecipeName"));
 			tempsRecette.setText((api.description).get("TotalTime") + " minutes");
 			avgRecette.setText((api.description).get("AvgRating"));
+			nbServingRecette.setText(nbServing);
 
 			ContentResolver resolverHis = getContentResolver();
 			ContentValues valHis = new ContentValues();
 			valHis.clear();
-			valHis.put(RecipeDatabaseHelper.historyColumns[0],(api.description).get("RecipeID"));
-			valHis.put(RecipeDatabaseHelper.historyColumns[1], (api.description).get("RecipeName"));
-			valHis.put(RecipeDatabaseHelper.historyColumns[2], (api.description).get("TotalTime"));
-			valHis.put(RecipeDatabaseHelper.historyColumns[3], (api.description).get("NumberOfServings"));
-			valHis.put(RecipeDatabaseHelper.historyColumns[4], (api.description).get("AvgRating"));
+			valHis.put(RecipeDatabaseHelper.histOrFavColumns[0],(api.description).get("RecipeID"));
+			valHis.put(RecipeDatabaseHelper.histOrFavColumns[1], (api.description).get("RecipeName"));
+			valHis.put(RecipeDatabaseHelper.histOrFavColumns[2], (api.description).get("TotalTime"));
+			valHis.put(RecipeDatabaseHelper.histOrFavColumns[3], (api.description).get("NumberOfServings"));
+			valHis.put(RecipeDatabaseHelper.histOrFavColumns[4], (api.description).get("AvgRating"));
 
 			resolverHis.insert(RecipeContentProvider.getPageUri(RecipeContentProvider.HISTORY), valHis);
 			Log.d("OK", "BDD_His");
@@ -470,6 +587,9 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 				ingredientList.add((api.ingredients).get(cle));
 			}
 
+			ingredientNameList=(api.ingredientName);
+			ingredientIDList=(api.ingredientID);
+
 			//Verification Ingredients
 			for(String element:(ingredientList))
 			{
@@ -483,12 +603,15 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 			{
 				ncc += element + "\n";
 			}
+			nutritionRecette.setText(ncc);
+
 			recette=api;
 		}
 	}
 
 	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 		ImageView bmImage;
+		Bitmap mIcon11 = null;
 
 		public DownloadImageTask(ImageView bmImage) {
 			this.bmImage = bmImage;
@@ -496,7 +619,7 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 
 		protected Bitmap doInBackground(String... urls) {
 			String urldisplay = urls[0];
-			Bitmap mIcon11 = null;
+
 			try {
 				InputStream in = new java.net.URL(urldisplay).openStream();
 				mIcon11 = BitmapFactory.decodeStream(in);
@@ -507,7 +630,7 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 		}
 
 		protected void onPostExecute(Bitmap result) {
-			bmImage.setImageBitmap(result);
+			bmImage.setImageBitmap(mIcon11);
 		}
 	}
 
@@ -551,7 +674,7 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 			// TODO Auto-generated method stub
 
 			if (view == null) {
-				//				LayoutInflater inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				//LayoutInflater inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				view = inf.inflate(R.layout.list, parent, false);
 			}
 
@@ -564,28 +687,39 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 
 			checkBox.setTag(position);
 
-			/*	checkBox.setOnClickListener(new View.OnClickListener() {
+			checkBox.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
 					int pos = (Integer) view.getTag();
 
-					final DataEquipe dataEquipe = listEquipe.get(pos);
+					final String ing_name = ingredientNameList.get(pos);
+					final String ing_id = ingredientIDList.get(pos);
 
-					DBHelper dbh = new DBHelper(context);
-
+					ContentResolver resolverShop = getContentResolver();
+					ContentValues valShop = new ContentValues();
 					boolean checked = ((CheckBox) view).isChecked();
 
 					if (checked) {
-						//Marquer comme favori
-						dbh.addNewFavori(Integer.parseInt(dataEquipe.getiDTeam()), dataEquipe.getNomEquipe());
+						//Ajoute a la Base de donnees pour la shopping list
+						valShop.clear();
+						valShop.put(RecipeDatabaseHelper.shopListColumns[0],ing_id);
+						valShop.put(RecipeDatabaseHelper.shopListColumns[1], ing_name);
+						valShop.put(RecipeDatabaseHelper.shopListColumns[2], recette.description.get("RecipeName"));
+
+						resolverShop.insert(RecipeContentProvider.getPageUri(RecipeContentProvider.SHOPPINGLIST), valShop);
+						Toast.makeText(ctx,"Added to the shopping list",Toast.LENGTH_SHORT).show();
+						Log.d("OK", "BDD_Shop_ADD");
 					} 
 					else {
-						//Marquer comme non favori
-						dbh.deleteFavoris(Integer.parseInt(dataEquipe.getiDTeam()));
+						//retirer de la shopping liste
+						resolverShop.delete(RecipeContentProvider.getPageUri(RecipeContentProvider.SHOPPINGLIST), "_id="+ing_id , null);
+						Toast.makeText(ctx,"Removed to the shopping list",Toast.LENGTH_SHORT).show();
+						Log.d("OK", "BDD_Shop_SUPP");
 					}
 
 				}
-			});  */
+			});
+
 			return view;
 		}
 	}
