@@ -553,7 +553,7 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 
 			nomRecette.setText((api.description).get("RecipeName"));
 			tempsRecette.setText((api.description).get("TotalTime") + " minutes");
-			avgRecette.setText((api.description).get("AvgRating"));
+			avgRecette.setText("note: "+(api.description).get("AvgRating")+"/5");
 			nbServingRecette.setText(nbServing);
 
 			ContentResolver resolverHis = getContentResolver();
@@ -713,7 +713,7 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 					else {
 						//retirer de la shopping liste
 						resolverShop.delete(RecipeContentProvider.getPageUri(RecipeContentProvider.SHOPPINGLIST), "_id="+ing_id , null);
-						Toast.makeText(ctx,"Removed to the shopping list",Toast.LENGTH_SHORT).show();
+						Toast.makeText(ctx,"Removed from the shopping list",Toast.LENGTH_SHORT).show();
 						Log.d("OK", "BDD_Shop_SUPP");
 					}
 
