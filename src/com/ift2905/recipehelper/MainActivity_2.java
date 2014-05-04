@@ -1,4 +1,4 @@
-package com.example.recipehelper;
+package com.ift2905.recipehelper;
 
 
 import java.io.IOException;
@@ -148,6 +148,7 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		recipe_id = getIntent().getStringExtra("recipeID");
 		ctx=this;
 
 		getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -545,12 +546,12 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 			setProgressBarIndeterminateVisibility(false);
 
 			if( api == null ) {
-				Toast.makeText(MainActivity.this, "Oups!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity_2.this, "Oups!", Toast.LENGTH_SHORT).show();
 				return;
 			}
 
 			if( api.erreur != null ) {
-				Toast.makeText(MainActivity.this, api.erreur, Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity_2.this, api.erreur, Toast.LENGTH_SHORT).show();
 				return;
 			}
 			recetteInfo.setVisibility(View.VISIBLE);
