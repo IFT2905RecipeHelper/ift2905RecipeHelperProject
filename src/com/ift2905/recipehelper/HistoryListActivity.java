@@ -3,14 +3,15 @@ package com.ift2905.recipehelper;
 import android.app.ListActivity;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.SimpleCursorAdapter.ViewBinder;
-import android.util.Log;
 
 public class HistoryListActivity extends ListActivity implements
 LoaderManager.LoaderCallbacks<Cursor>  {
@@ -91,5 +92,12 @@ LoaderManager.LoaderCallbacks<Cursor>  {
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		adapter.swapCursor(null);		
-	}	
+	}
+	
+	public void openRecipePage(View v){
+		Intent recipeAccessActivity = new Intent(this, MainActivity_2.class);
+		TextView id = (TextView)v.findViewById(R.id.RecipeID);
+		recipeAccessActivity.putExtra("recipeID", id.getText().toString());
+		startActivity(recipeAccessActivity);
+	}
 }
