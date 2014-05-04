@@ -18,7 +18,6 @@
 
             <TextView
                 android:id="@+id/textViewEtapes"
-                style="@style/CodeFont"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -26,6 +25,8 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
                 android:text="TextView"
+                android:textColor="#191919"
+                android:typeface="serif"
                 android:textSize="14sp" />
 
         </RelativeLayout>
@@ -81,7 +82,8 @@
                 android:layout_height="40dp"
                 android:layout_weight="-0.3"
                 android:text="Set"
-                android:typeface="serif" />
+                android:typeface="serif"
+                android:textColor="#191919" />
 
         </LinearLayout>
 
@@ -92,6 +94,7 @@
             android:layout_gravity="center"
             android:text="00:00:00"
             android:textSize="31dp"
+            android:textColor="#191919"
             android:typeface="serif" />
 
         <LinearLayout
@@ -106,7 +109,8 @@
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:text=""
-                android:typeface="serif" />
+                android:typeface="serif" 
+                android:textColor="#191919"/>
 
             <Button
                 android:id="@+id/PauseContinue"
@@ -115,7 +119,8 @@
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:text=""
-                android:typeface="serif" />
+                android:typeface="serif"
+                android:textColor="#191919" />
         </LinearLayout>
     </LinearLayout>
 
