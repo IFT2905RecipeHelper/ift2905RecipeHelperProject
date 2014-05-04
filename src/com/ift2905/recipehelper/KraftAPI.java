@@ -36,6 +36,8 @@ public class KraftAPI {
 	
 	ArrayList<HashMap<String,String>> searchResults;
 	HashMap<String,String> ingredients;
+	ArrayList<String> ingredientName;
+	ArrayList<String> ingredientID;
 	ArrayList<String> etapes;
 	HashMap<String,String> description;
 	ArrayList<String> nutritionDetail;
@@ -119,6 +121,8 @@ public class KraftAPI {
 			etapes = new ArrayList<String>();
 			description = new HashMap<String,String>();
 			nutritionDetail = new ArrayList<String>();
+			ingredientID = new ArrayList<String>();
+			ingredientName = new ArrayList<String>();
 
 			parser.require(XmlPullParser.START_TAG, null, "RecipeDetailResponse");
 			Log.d("RecipeHelper", "Required has been passed");
@@ -159,10 +163,12 @@ public class KraftAPI {
 							continue;
 						}
 						else if (parser.getName().equals("RecipeIngredientID")){
-							ing_id = parser.nextText(); 
+							ing_id = parser.nextText();
+							ingredientID.add(ing_id);
 							Log.d("Ok", parser.getName());
 						} else if (parser.getName().equals("IngredientName")){
 							ing_name = parser.nextText();
+							ingredientName.add(ing_name);
 							Log.d("Ok", parser.getName());
 						} else if (parser.getName().equals("QuantityText")){
 							ing_qty = parser.nextText();
@@ -347,5 +353,13 @@ public class KraftAPI {
 
 	public ArrayList<String> getNutritionDetails(){
 		return nutritionDetail;
+	}
+	
+	public ArrayList<String> getIngredientID(){
+		return ingredientID;
+	}
+	
+	public ArrayList<String> getIngredientName(){
+		return ingredientName;
 	}
 }
