@@ -174,7 +174,10 @@ public class KraftAPI {
 							ing_qty = parser.nextText();
 							Log.d("Ok", parser.getName());
 						} else if (parser.getName().equals("QuantityUnit")){
-							ingredients.put(ing_id , ing_qty + " " + parser.nextText() + " of " + ing_name);
+							if(ing_qty.equals("")){
+								ingredients.put(ing_id ,ing_name);
+							}else{
+							ingredients.put(ing_id , ing_qty + " " + parser.nextText() + " of " + ing_name);}
 							Log.d("Ok", parser.getName());
 						}
 					}
