@@ -36,7 +36,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="13sp" />
+                android:textSize="10sp"
+                android:typeface="serif" />
 
         </LinearLayout>
 
@@ -79,7 +80,7 @@
                         android:paddingLeft="8dp"
                         android:text="@string/Temps_recette"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
