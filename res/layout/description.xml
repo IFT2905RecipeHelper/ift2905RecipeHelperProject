@@ -24,6 +24,7 @@
                     android:text="Serving"
                     android:textColor="#191919"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:typeface="serif"
                     android:textSize="15sp" />
 
                 <TextView
