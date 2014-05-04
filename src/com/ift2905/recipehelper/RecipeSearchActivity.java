@@ -1,13 +1,10 @@
 package com.ift2905.recipehelper;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -40,9 +37,6 @@ public class RecipeSearchActivity extends Activity {
 	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 	      String query = intent.getStringExtra(SearchManager.QUERY);
 	      gotKeywords = query.split(" ");
-	      for (String s: gotKeywords){
-	    	  Log.d("RecipeHelper", "I have a keyword called " + s);
-	      }
 	    }
 	}
 
@@ -89,6 +83,7 @@ public class RecipeSearchActivity extends Activity {
 			rating.setText(map.get("AvgRating")+ "/5");
 			ImageView photo = (ImageView)rowView.findViewById(R.id.RecipeIcon);
 			new DownloadImageTask(photo).execute(map.get("PhotoURL"));
+			rowView.setTag(map.get("RecipeID"));
 			return rowView;
 		}
 		
@@ -137,6 +132,11 @@ public class RecipeSearchActivity extends Activity {
 			pagesLoaded++;
 		}
 		
+	}
+	public void openRecipePage(View v){
+		Intent recipeAccessActivity = new Intent(this, MainActivity_2.class);
+		recipeAccessActivity.putExtra("recipeID", (String)v.getTag());
+		startActivity(recipeAccessActivity);
 	}
 
 }
