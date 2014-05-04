@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="" />
+        android:text="" 
+        />
 
     <LinearLayout
         android:id="@+id/listInner"
@@ -26,12 +27,13 @@
 
             <TextView
                 android:id="@+id/recipeIngredient"
-                style="@style/CodeFont"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="TextView"
-                android:textSize="14sp" />
+                android:textColor="#191919"
+                android:textSize="14sp"
+                android:typeface="serif" />
 
         </RelativeLayout>
 
