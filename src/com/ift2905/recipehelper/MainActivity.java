@@ -5,17 +5,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.support.v7.widget.SearchView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.app.SearchManager;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -28,47 +25,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.SimpleAdapter.ViewBinder;
 import android.widget.TextView;
-import android.os.Build;
 
 public class MainActivity extends ActionBarActivity implements OnMenuItemClickListener {
 
 	PopupMenu optionMenu;
-	SimpleAdapter adapter;
+	RecipeAdapter adapter;
 	ListView recipeOfTheWeekList;
 	ArrayList<HashMap<String,String>> recipesOfTheWeek = new ArrayList<HashMap<String,String>>();
 	Context context = this;
 	LinearLayout mainLayout;
-	static final ViewBinder VIEWBINDER = new ViewBinder() {
-
-		@Override
-		public boolean setViewValue(View view, Object data,
-				String textRepresentation) {
-			switch (view.getId()){
-			case R.id.RecipeID:
-			case R.id.RecipeName:
-			case R.id.RecipeServings:
-			case R.id.RecipeTime:
-				return false;
-			case R.id.RecipeRating:
-				String valueOn5 = (String) data + "/5";
-				((TextView) view).setText(valueOn5);
-				return true;
-			case R.id.RecipeIcon:
-				new DownloadImageTask((ImageView) view).execute((String) data);
-				return true;
-			default:
-				return false;
-			}
-		}
-		
-	};
 	
 	Thread API_THREAD;
 	
@@ -76,10 +46,8 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
 		@Override
 		public void run() {
-	        adapter = new SimpleAdapter(context, recipesOfTheWeek, R.layout.recipe_info_layout, from, to);
-	        adapter.setViewBinder(VIEWBINDER);
+	        adapter = new RecipeAdapter(context, recipesOfTheWeek);
 	        recipeOfTheWeekList.setAdapter(adapter);
-			((BaseAdapter) recipeOfTheWeekList.getAdapter()).notifyDataSetChanged();
 		}
 		
 	});
@@ -203,36 +171,75 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 			Intent dtbAccessActivity = new Intent(this, HistoryListActivity.class);
 			dtbAccessActivity.putExtra("pageType", pageLaunched);
 			startActivity(dtbAccessActivity);
+		} else if (pageLaunched.equals("shop")){
+			Intent dtbAccessActivity = new Intent(this, SLListActivity.class);
+			startActivity(dtbAccessActivity);
 		}
 	}
 	
-	/*
-	 * This is code from stackoverflow
-	 * http://stackoverflow.com/questions/5776851/load-image-from-url
-	 * We need this in order to use the images provided to use by the kraft API
-	 * The code lets us load the picture on a seperate thread so as to not slow down the activity.
-	 */
-	static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-		  ImageView bmImage;
-
-		  public DownloadImageTask(ImageView bmImage) {
-		      this.bmImage = bmImage;
-		  }
-
-		  protected Bitmap doInBackground(String... urls) {
-		      String urldisplay = urls[0];
-		      Bitmap mIcon11 = null;
-		      try {
-		        InputStream in = new java.net.URL(urldisplay).openStream();
-		        mIcon11 = BitmapFactory.decodeStream(in);
-		      } catch (Exception e) {
-		          e.printStackTrace();
-		      }
-		      return mIcon11;
-		  }
-
-		  protected void onPostExecute(Bitmap result) {
-		      bmImage.setImageBitmap(result);
-		  }
+	private class RecipeAdapter extends ArrayAdapter<HashMap<String,String>>{
+		Context context;
+		ArrayList<HashMap<String,String>> list;
+		RecipeAdapter(Context c, ArrayList<HashMap<String,String>> l){
+			super(c, R.layout.recipe_info_layout, l);
+			context = c;
+			list = l;
 		}
+		public View getView(int position, View convertView, ViewGroup parent){
+			LayoutInflater inflater = (LayoutInflater) context
+			        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View rowView = inflater.inflate(R.layout.recipe_info_layout, parent, false);
+			HashMap<String,String> map = list.get(position);
+			TextView id = (TextView)rowView.findViewById(R.id.RecipeID);
+			id.setText(map.get("RecipeID"));
+			TextView name = (TextView)rowView.findViewById(R.id.RecipeName);
+			name.setText(map.get("RecipeName"));
+			TextView time = (TextView)rowView.findViewById(R.id.RecipeTime);
+			time.setText(map.get("TotalTime"));
+			TextView servings = (TextView)rowView.findViewById(R.id.RecipeServings);
+			servings.setText(map.get("NumberOfServings"));
+			TextView rating = (TextView)rowView.findViewById(R.id.RecipeRating);
+			rating.setText(map.get("AvgRating")+ "/5");
+			ImageView photo = (ImageView)rowView.findViewById(R.id.RecipeIcon);
+			new DownloadImageTask(photo).execute(map.get("PhotoURL"));
+			rowView.setTag(map.get("RecipeID"));
+			return rowView;
+		}
+		
+		/*
+		 * This is code from stackoverflow
+		 * http://stackoverflow.com/questions/5776851/load-image-from-url
+		 * We need this in order to use the images provided to use by the kraft API
+		 * The code lets us load the picture on a seperate thread so as to not slow down the activity.
+		 */
+		private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+			  ImageView bmImage;
+
+			  public DownloadImageTask(ImageView bmImage) {
+			      this.bmImage = bmImage;
+			  }
+
+			  protected Bitmap doInBackground(String... urls) {
+			      String urldisplay = urls[0];
+			      Bitmap mIcon11 = null;
+			      try {
+			        InputStream in = new java.net.URL(urldisplay).openStream();
+			        mIcon11 = BitmapFactory.decodeStream(in);
+			      } catch (Exception e) {
+			          e.printStackTrace();
+			      }
+			      return mIcon11;
+			  }
+
+			  protected void onPostExecute(Bitmap result) {
+			      bmImage.setImageBitmap(result);
+			  }
+			}
+	}
+	
+	public void openRecipePage(View v){
+		Intent recipeAccessActivity = new Intent(this, MainActivity_2.class);
+		recipeAccessActivity.putExtra("recipeID", (String)v.getTag());
+		startActivity(recipeAccessActivity);
+	}
 }
