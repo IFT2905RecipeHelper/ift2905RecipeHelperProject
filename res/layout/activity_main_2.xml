@@ -20,26 +20,30 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical" >
 
             <ImageView
                 android:id="@+id/RecipeIcone"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:scaleType="fitXY" />
 
             <TextView
                 android:id="@+id/RecipeRatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:textSize="13sp" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5" >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6" >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,7 +57,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
                     android:text="@string/Nom_recette"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -73,18 +78,22 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="8dp"
                         android:text="@string/Temps_recette"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="16sp" />
+
                 </LinearLayout>
 
                 <Button
                     android:id="@+id/favoriButton"
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="43dp"
                     android:layout_gravity="center"
                     android:paddingLeft="10dp"
                     android:text="@string/Favoris"
+                    android:textSize="16sp"
                     android:typeface="serif" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -93,7 +102,7 @@
         android:id="@+id/awesomepager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="7" />
 
     <TextView
         android:id="@+id/RecipeID"
