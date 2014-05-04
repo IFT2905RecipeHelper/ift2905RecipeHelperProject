@@ -19,7 +19,7 @@
         android:layout_height="wrap_content" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical" >
@@ -31,20 +31,20 @@
                 android:layout_gravity="center"
                 android:scaleType="fitXY" />
 
-            <TextView
-                android:id="@+id/RecipeRatingBar"
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="10sp"
-                android:typeface="serif" />
+                android:numStars="5" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6" >
+            android:layout_weight="0.2" >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,6 +58,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
                     android:text="@string/Nom_recette"
+                    android:textColor="#191919"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="16sp" />
 
@@ -77,8 +78,9 @@
                         style="@style/CodeFont"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="8dp"
+                        android:paddingLeft="5dp"
                         android:text="@string/Temps_recette"
+                        android:textColor="#191919"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textSize="14sp" />
 
@@ -93,7 +95,8 @@
                     android:paddingLeft="10dp"
                     android:text="@string/Favoris"
                     android:textSize="16sp"
-                    android:typeface="serif" />
+                    android:typeface="serif" 
+                    android:textColor="#191919"/>
 
             </LinearLayout>
         </LinearLayout>
