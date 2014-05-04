@@ -16,6 +16,7 @@ import android.app.FragmentTransaction;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -270,8 +271,8 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 					@Override
 					public void onClick(View v) 
 					{
-						Button showListButton = (Button)v;
-
+						Intent slIntent = new Intent(MainActivity_2.this, SLListActivity.class);
+						startActivity(slIntent);
 					}
 				});
 
