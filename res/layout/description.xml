@@ -18,23 +18,24 @@
 
                 <TextView
                     android:id="@+id/nbServing"
-                    style="@style/CodeFont"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
                     android:text="Serving"
+                    android:textColor="#191919"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/nutrition"
-                    style="@style/CodeFont"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Nutrition"
+                    android:textColor="#191919"                    
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="15sp" android:typeface="serif"/>
+                    android:textSize="15sp" 
+                    android:typeface="serif"/>
 
             </LinearLayout>
 
