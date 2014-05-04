@@ -134,7 +134,9 @@ public class KraftAPI {
 
 				if (parser.getEventType() != XmlPullParser.START_TAG){
 					continue;
-				} 
+				} else if (parser.getName().equals("ComplimentaryRecipes")){
+					break;
+				}
 				//Description
 				else if (parser.getName().equals("RecipeID")){
 					description.put("RecipeID", parser.nextText());
