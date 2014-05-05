@@ -14,15 +14,21 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
+            android:paddingLeft="3dp"
             android:text="Omelet"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textColor="#191919"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:typeface="serif" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:paddingLeft="3dp"
+        android:paddingTop="5dp" >
         
         <ImageView
        		 android:id="@+id/RecipeIcon"
@@ -68,8 +74,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_marginRight="10dp"
+                android:paddingLeft="3dp"
                 android:text="10mins"
-                android:textSize="18sp"
+                android:typeface="serif"
+                android:textSize="14sp"
                 android:layout_toRightOf="@id/TimerIcon" />
 
             <ImageView
@@ -95,7 +103,10 @@
                 android:layout_gravity="left"
                 android:layout_marginRight="10dp"
                 android:text="1 serv."
-                android:textSize="18sp"
+                android:textColor="#191919"
+                android:textSize="14sp"
+                android:paddingLeft="3dp"
+                android:typeface="serif"
                 android:layout_below="@id/RecipeTime"
                 android:layout_toRightOf="@id/ServIcon" />
 
@@ -122,7 +133,10 @@
                 android:layout_gravity="left"
                 android:layout_marginRight="10dp"
                 android:text="5/5"
-                android:textSize="18sp"
+                android:textColor="#191919"
+                android:textSize="14sp"
+                android:paddingLeft="3dp"
+                android:typeface="serif"
                 android:layout_below="@id/RecipeServings"
                 android:layout_toRightOf="@id/StarIcon" />
             
