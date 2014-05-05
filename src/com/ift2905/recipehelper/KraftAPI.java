@@ -21,7 +21,7 @@ public class KraftAPI {
 	public static final String URLSTART = "http://www.kraftfoods.com/ws/RecipeWS.asmx";
 	public static final String RECIPESOFTHEWEEK = "/GetRecipesOfTheWeek";
 	public static final String SEARCHBYKEYWORD = "/GetRecipesByKeywords";
-	public static final String SEARCHBYID = "/GetRecipesByRecipeIDs";
+	public static final String SEARCHBYID = "/GetRecipeByRecipeID";
 	public static final String ISITEID = "iSiteID=1";
 	public static final String IBRANDID = "iBrandID=1";
 	public static final String ILANGID = "iLangID=1";
