@@ -195,7 +195,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 			TextView name = (TextView)rowView.findViewById(R.id.RecipeName);
 			name.setText(map.get("RecipeName"));
 			TextView time = (TextView)rowView.findViewById(R.id.RecipeTime);
-			time.setText(map.get("TotalTime"));
+			time.setText(map.get("TotalTime")+" minutes");
 			TextView servings = (TextView)rowView.findViewById(R.id.RecipeServings);
 			servings.setText(map.get("NumberOfServings"));
 			TextView rating = (TextView)rowView.findViewById(R.id.RecipeRating);
