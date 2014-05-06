@@ -1,4 +1,4 @@
-package com.example.recipehelper;
+package com.ift2905.recipehelper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +35,7 @@ public class KraftAPI {
 	String erreur;
 	
 	ArrayList<HashMap<String,String>> searchResults;
-	HashMap<String,String> ingredients;
+	ArrayList<String> ingredients;
 	ArrayList<String> ingredientName;
 	ArrayList<String> ingredientID;
 	ArrayList<String> etapes;
@@ -48,7 +48,6 @@ public class KraftAPI {
 	InputStream recipeStream;
 	KraftAPI(String functionInvoked) throws IOException{
 		
-		Log.d("RecipeHelper", "Creating API");
 		if (!(functionInvoked.equals(RECIPESOFTHEWEEK))){ 
 			throw new IllegalArgumentException("Incorrect page invoked. Either page does not exist, or there are missing args.");
 		}
@@ -113,11 +112,10 @@ public class KraftAPI {
 			XmlPullParser parser = Xml.newPullParser();
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 			parser.setInput(recipeStream, null);
-			Log.d("RecipeHelper", "setInput has been passed");
 			parser.nextTag();
-			Log.d("RecipeHelper", "nextTag has been passed");
 
-			ingredients = new HashMap<String,String>();
+
+			ingredients = new ArrayList<String>();
 			etapes = new ArrayList<String>();
 			description = new HashMap<String,String>();
 			nutritionDetail = new ArrayList<String>();
@@ -125,12 +123,10 @@ public class KraftAPI {
 			ingredientName = new ArrayList<String>();
 
 			parser.require(XmlPullParser.START_TAG, null, "RecipeDetailResponse");
-			Log.d("RecipeHelper", "Required has been passed");
 
 			while (parser.next() != XmlPullParser.END_DOCUMENT)
 			{
 				String tagName = parser.getName();
-				Log.d("RecipeHelper","Found a tag called" + tagName);
 
 				if (parser.getEventType() != XmlPullParser.START_TAG){
 					continue;
@@ -150,7 +146,6 @@ public class KraftAPI {
 					description.put("AvgRating", parser.nextText());
 				} else if (parser.getName().equals("PhotoURL")){
 					description.put("PhotoURL", parser.nextText());
-					Log.d("KraftAPI_URLFounded", description.get("PhotoURL"));
 				}
 
 				//Ingredients
@@ -167,20 +162,16 @@ public class KraftAPI {
 						else if (parser.getName().equals("RecipeIngredientID")){
 							ing_id = parser.nextText();
 							ingredientID.add(ing_id);
-							Log.d("Ok", parser.getName());
 						} else if (parser.getName().equals("IngredientName")){
 							ing_name = parser.nextText();
 							ingredientName.add(ing_name);
-							Log.d("Ok", parser.getName());
 						} else if (parser.getName().equals("QuantityText")){
 							ing_qty = parser.nextText();
-							Log.d("Ok", parser.getName());
 						} else if (parser.getName().equals("QuantityUnit")){
 							if(ing_qty.equals("")){
-								ingredients.put(ing_id ,ing_name);
+								ingredients.add(ing_name);
 							}else{
-							ingredients.put(ing_id , ing_qty + " " + parser.nextText() + " of " + ing_name);}
-							Log.d("Ok", parser.getName());
+							ingredients.add(ing_qty + " " + parser.nextText() + " of " + ing_name);}
 						}
 					}
 				}
@@ -196,7 +187,6 @@ public class KraftAPI {
 						} else if(parser.getName().equals("Description"))
 						{
 							etapes.add(parser.nextText());
-							Log.d("Ok", "Etapes");
 						}
 					}
 
@@ -213,22 +203,18 @@ public class KraftAPI {
 						} else if(parser.getName().equals("NutritionItemName"))
 						{
 							nutri=parser.nextText();
-							Log.d("Ok", parser.getName());
 						} else if(parser.getName().equals("Quantity"))
 						{
 							nutri+= ": " + parser.nextText();
-							Log.d("Ok", parser.getName());
 
 						}else if(parser.getName().equals("Unit"))
 						{
 							nutri+=parser.nextText();
 							nutritionDetail.add(nutri);
-							Log.d("Ok", parser.getName());
 						}
 					}
 				}
 			}
-
 			recipeStream.close();
 		}catch (ClientProtocolException e) {
 			Log.d("RecipeHelper", "Erreur HTTP (protocole) :"+e.getMessage());
@@ -237,7 +223,7 @@ public class KraftAPI {
 			Log.d("RecipeHelper", "Erreur HTTP (IO) :"+e.getMessage());
 			throw e;
 		} catch (XmlPullParserException e) {
-			Log.d("RecipeHelper", e.getMessage());
+			Log.e("RecipeHelper", e.getMessage());
 			throw e;
 		}
 	}
@@ -252,18 +238,14 @@ public class KraftAPI {
 			XmlPullParser parser = Xml.newPullParser();
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 			parser.setInput(recipeStream, null);
-			Log.d("RecipeHelper", "setInput has been passed");
 			parser.nextTag();
-			Log.d("RecipeHelper", "nextTag has been passed");
 			
 			searchResults = new ArrayList<HashMap<String,String>>();
 			
 			parser.require(XmlPullParser.START_TAG, null, "RecipeSummariesResponse");
-			Log.d("RecipeHelper", "Required has been passed");
 			HashMap<String,String> currentInfo = null;
 			while (parser.next() != XmlPullParser.END_DOCUMENT){
 				String tagName = parser.getName();
-				Log.d("RecipeHelper","Found a tag called" + tagName);
 				if (parser.getEventType() == XmlPullParser.END_TAG && tagName.equals("RecipeSummary")) {
 		            searchResults.add(currentInfo);
 		        } else if (parser.getEventType() == XmlPullParser.START_TAG && tagName.equals("RecipeSummary")){
@@ -299,7 +281,7 @@ public class KraftAPI {
 	
 	
 	/*
-	 * Méthode utilitaire qui permet de rapidement
+	 * MÃ©thode utilitaire qui permet de rapidement
 	 * charger et obtenir une page web depuis
 	 * l'internet.
 	 * 
@@ -313,9 +295,7 @@ public class KraftAPI {
 	}
 	private HttpEntity getHttpByKeyword(String[] keywords, int page) throws ClientProtocolException, IOException {
 		StringBuilder urlString = new StringBuilder(URLSTART + SEARCHBYKEYWORD + "?");
-		Log.d("RecipeHelper", "What is keyword.length? " + keywords.length);
 		for (int i = 0; i < 6; i++){
-			Log.d("RecipeHelper", "What is i? " + i);
 			urlString.append("sKeyword" + (i+1) + "=");
 			if (i < keywords.length) urlString.append(keywords[i] + "&");
 			else urlString.append("&");
@@ -325,7 +305,6 @@ public class KraftAPI {
 				"sSortField=&sSortDirection=&" + IBRANDID + "&"
 				+ ILANGID + "&iStartRow=" + (page * 25)
 				+ "&iEndRow=" + (page * 25 + 24));
-		Log.d("RecipeHelper", urlString.toString());
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet http = new HttpGet(urlString.toString());
 		HttpResponse response = httpClient.execute(http);
@@ -344,7 +323,7 @@ public class KraftAPI {
 		return searchResults;
 	}
 	
-	public HashMap<String,String> getIngredients(){
+	public ArrayList<String> getIngredients(){
 		return ingredients;
 	}
 
@@ -359,7 +338,6 @@ public class KraftAPI {
 	public ArrayList<String> getNutritionDetails(){
 		return nutritionDetail;
 	}
-	
 	public ArrayList<String> getIngredientID(){
 		return ingredientID;
 	}
