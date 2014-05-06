@@ -501,7 +501,6 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
             
 			resolverFav.insert(RecipeContentProvider.getPageUri(RecipeContentProvider.FAVORITES), valFav);
             
-			Log.d("OK", "BDD_Fav_ADD");
 			Toast.makeText(ctx,"Added to favorites",Toast.LENGTH_SHORT).show();
             
 			isFavori=true;
@@ -512,7 +511,6 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
             
 			resolverFav.delete(RecipeContentProvider.getPageUri(RecipeContentProvider.FAVORITES), "_id="+(recette.description).get("RecipeID"), null);
             
-			Log.d("OK", "BDD_Fav_SUPP");
 			Toast.makeText(ctx,"Removed from favorites",Toast.LENGTH_SHORT).show();
             
 			isFavori=false;
@@ -585,9 +583,7 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 			valHis.put(RecipeDatabaseHelper.histOrFavColumns[4], (api.description).get("AvgRating"));
             
 			resolverHis.insert(RecipeContentProvider.getPageUri(RecipeContentProvider.HISTORY), valHis);
-			Log.d("OK", "BDD_His");
             
-			Log.d((api.description).get("PhotoURL"),"BAD");
 			new DownloadImageTask(icone).execute((api.description).get("PhotoURL"));
             
 			acc="";
@@ -597,17 +593,13 @@ public class MainActivity_2 extends Activity implements OnPageChangeListener, On
 				acc += i + ". " + element + "\n\n";
 				i++;
 			}
-			Log.d("ACC",acc);
             
 			ingredientList.clear();
 			//Ingredients passe de Hashmap a List
-			Set<String> keys=api.ingredients.keySet();
-			Iterator<String> it=keys.iterator();
-			while(it.hasNext()){
-				Object cle=it.next();
-				ingredientList.add((api.ingredients).get(cle));
-			}
 			
+			for (String s: api.ingredients){
+				ingredientList.add(s);
+			}
 			ingredientNameList.clear();
 			ingredientIDList.clear();
 			ingredientNameList=(api.ingredientName);
