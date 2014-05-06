@@ -13,8 +13,10 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="14dp"
         android:text="N/D"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:textColor="#191919"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="serif" />
 
     <ImageButton
         android:id="@+id/chkBtnRecipe"
@@ -22,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:src="@android:drawable/checkbox_on_background" />
+        android:src="@android:drawable/checkbox_on_background"/>
 
     <TextView
         android:id="@+id/ingredientRecipe"
@@ -32,7 +34,8 @@
         android:layout_alignBottom="@+id/chkBtnIngredient"
         android:layout_marginLeft="14dp"
         android:text="Ingredients"
-        android:textSize="15sp" />
+        android:textSize="14sp"
+        android:typeface="serif"  />
 
     <ImageButton
         android:id="@+id/chkBtnIngredient"
@@ -40,6 +43,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/chkBtnRecipe"
-        android:src="@android:drawable/checkbox_on_background" />
+        android:src="@android:drawable/checkbox_on_background"/>
 
 </RelativeLayout>
